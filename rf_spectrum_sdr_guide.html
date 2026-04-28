@@ -393,6 +393,9 @@
         color: var(--color-background-primary);
         border-color: var(--color-text-primary);
       }
+      .filter-btn.filter-fav { color: #d4a017; border-color: #d4a017; }
+      .filter-btn.filter-fav:hover { background: rgba(212,160,23,0.08); color: #d4a017; }
+      .filter-btn.filter-fav.on { background: #d4a017; color: #fff; border-color: #d4a017; }
 
       .legend {
         display: flex;
@@ -1133,6 +1136,29 @@
         color: var(--color-text-tertiary);
         margin-top: 2px;
       }
+      .settings-row-block { display: block; }
+      .settings-row-block .settings-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--color-text-primary);
+        margin-bottom: 6px;
+      }
+      .settings-row-block select {
+        width: 100%;
+        background: var(--color-background-secondary);
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px;
+        font: inherit;
+        font-size: 14px;
+      }
+      .settings-row-block select:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 2px rgba(127,119,221,0.2);
+      }
       @media (prefers-reduced-motion: reduce) {
         .settings-drawer {
           transition: none;
@@ -1199,6 +1225,49 @@
         flex-wrap: wrap;
       }
       .header-tools .theme-right { margin-left: auto; }
+
+      /* Footer / version stamp */
+      .app-foot {
+        margin-top: 28px;
+        padding: 16px 0 24px;
+        border-top: 1px solid var(--color-border-tertiary);
+        text-align: center;
+        font-size: 11px;
+        color: var(--color-text-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .app-foot .foot-link {
+        background: transparent;
+        border: 0;
+        padding: 2px 6px;
+        cursor: pointer;
+        color: var(--color-accent);
+        font: inherit;
+        font-family: var(--font-mono);
+        border-radius: var(--radius-sm);
+      }
+      .app-foot .foot-link:hover { background: var(--color-background-secondary); }
+
+      /* Changelog list */
+      .changelog-list { margin: 0; padding: 0; list-style: none; }
+      .changelog-list li { margin-bottom: 18px; }
+      .changelog-list .cl-ver {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--color-text-primary);
+        margin-bottom: 4px;
+      }
+      .changelog-list .cl-date { color: var(--color-text-tertiary); font-weight: 400; font-size: 11px; }
+      .changelog-list ul { margin: 4px 0 0; padding-left: 18px; }
+      .changelog-list ul li { margin-bottom: 2px; font-size: 13px; color: var(--color-text-secondary); }
 
       /* ---------- Calculator + Help modal sections ---------- */
       .calc-row {
@@ -2158,6 +2227,167 @@
       }
       .pin-toggle.on { color: var(--color-accent); }
 
+      /* Compare presets */
+      .compare-presets {
+        padding: 8px 16px 10px;
+        border-bottom: 1px solid var(--color-border-tertiary);
+        background: var(--color-background-secondary);
+      }
+      .compare-presets .cp-row {
+        display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      }
+      .compare-presets .cp-label {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+        color: var(--color-text-tertiary); margin-right: 2px;
+      }
+      .compare-presets select {
+        flex: 1; min-width: 130px;
+        background: var(--color-background-primary);
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-sm);
+        padding: 5px 7px; font: inherit; font-size: 12px;
+      }
+      .compare-presets .cp-btn {
+        font: inherit; font-size: 12px;
+        padding: 5px 10px;
+        border: 1px solid var(--color-border-secondary);
+        background: var(--color-background-primary);
+        color: var(--color-text-primary);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+      }
+      .compare-presets .cp-btn:hover { border-color: var(--color-accent); }
+      .compare-presets .cp-del { color: var(--color-danger); }
+
+      /* Trip / scene planner */
+      .scene-search {
+        display: flex; gap: 6px; align-items: center; margin-bottom: 12px;
+      }
+      .scene-search input {
+        flex: 1;
+        background: var(--color-background-secondary);
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px; font: inherit; font-size: 14px;
+      }
+      .scene-search input:focus {
+        outline: none; border-color: var(--color-accent);
+        box-shadow: 0 0 0 2px rgba(127, 119, 221, 0.2);
+      }
+      .scene-search button {
+        background: transparent; color: var(--color-text-tertiary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-sm);
+        padding: 6px 10px; cursor: pointer; font-size: 14px;
+      }
+      .scene-grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 10px;
+      }
+      .scene-card {
+        text-align: left; cursor: pointer;
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-md);
+        padding: 12px; font: inherit; color: var(--color-text-primary);
+        display: flex; flex-direction: column; gap: 6px;
+        transition: transform 0.1s ease, border-color 0.1s ease;
+      }
+      .scene-card:hover {
+        transform: translateY(-1px);
+        border-color: var(--color-accent);
+      }
+      .scene-card .sc-icon { font-size: 24px; line-height: 1; }
+      .scene-card .sc-name { font-weight: 600; font-size: 14px; }
+      .scene-card .sc-tag { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+      .scene-card .sc-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.35; }
+      .scene-empty {
+        grid-column: 1 / -1;
+        text-align: center; padding: 24px;
+        color: var(--color-text-tertiary); font-size: 13px;
+      }
+      .scene-back {
+        background: transparent; border: none; color: var(--color-accent);
+        cursor: pointer; padding: 4px 0; margin-bottom: 10px;
+        font: inherit; font-size: 13px;
+      }
+      .scene-back:hover { text-decoration: underline; }
+      .scene-detail h3 { margin: 16px 0 8px; font-size: 15px; }
+      .scene-detail h3:first-child { margin-top: 0; }
+      .scene-detail .sd-summary {
+        background: var(--color-background-secondary);
+        border-left: 3px solid var(--color-accent);
+        padding: 10px 12px; margin: 0 0 14px;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        font-size: 13px; color: var(--color-text-secondary);
+      }
+      .scene-detail .sd-bands {
+        display: flex; flex-direction: column; gap: 4px;
+      }
+      .scene-detail .sd-band {
+        display: flex; align-items: center; gap: 8px;
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border-tertiary);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px; cursor: pointer;
+        font: inherit; color: var(--color-text-primary); text-align: left;
+      }
+      .scene-detail .sd-band:hover { border-color: var(--color-accent); }
+      .scene-detail .sd-band .sd-dot {
+        width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto;
+      }
+      .scene-detail .sd-band .sd-band-name { font-weight: 500; font-size: 13px; flex: 1; }
+      .scene-detail .sd-band .sd-band-freq { font-size: 11px; color: var(--color-text-tertiary); font-variant-numeric: tabular-nums; }
+      .scene-detail .sd-band .sd-band-why {
+        display: block; font-size: 11px; color: var(--color-text-secondary);
+        margin-top: 2px; font-style: italic;
+      }
+      .scene-detail .sd-band-row { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+      .scene-detail .sd-gear {
+        list-style: none; padding: 0; margin: 0;
+        display: grid; grid-template-columns: 1fr; gap: 4px;
+      }
+      .scene-detail .sd-gear li {
+        background: var(--color-background-secondary);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px; font-size: 13px;
+        border-left: 3px solid var(--color-border-tertiary);
+      }
+      .scene-detail .sd-gear li.essential { border-left-color: var(--color-accent); }
+      .scene-detail .sd-gear li .g-tag {
+        display: inline-block; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 0.04em; padding: 1px 6px; border-radius: 999px;
+        margin-right: 6px; vertical-align: middle;
+      }
+      .scene-detail .sd-gear li.essential .g-tag {
+        background: var(--color-accent); color: #fff;
+      }
+      .scene-detail .sd-gear li.optional .g-tag {
+        background: var(--color-background-tertiary); color: var(--color-text-secondary);
+      }
+      .scene-detail .sd-tips {
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border-tertiary);
+        border-radius: var(--radius-sm);
+        padding: 10px 12px; font-size: 12px; line-height: 1.5;
+        color: var(--color-text-secondary);
+      }
+      .scene-detail .sd-actions {
+        display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;
+      }
+      .scene-detail .sd-actions button {
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-sm);
+        padding: 6px 12px; cursor: pointer; font: inherit; font-size: 12px;
+        color: var(--color-text-primary);
+      }
+      .scene-detail .sd-actions button.primary {
+        background: var(--color-accent); border-color: var(--color-accent); color: #fff;
+      }
+
       /* Compare drawer — stacked cards (used on phones, optional on desktop) */
       .compare-cards {
         display: grid;
@@ -2492,16 +2722,6 @@
     </style>
   </head>
   <body>
-    <button
-      type="button"
-      id="settingsFab"
-      class="settings-fab"
-      aria-label="Open display settings"
-      title="Display settings"
-      onclick="openSettings()"
-    >
-      ⚙
-    </button>
     <aside
       id="settingsDrawer"
       class="settings-drawer"
@@ -2522,6 +2742,18 @@
         </button>
       </div>
       <div class="settings-drawer-body">
+        <div class="settings-row settings-row-block">
+          <label class="settings-label" for="settingThemeSelect">Theme</label>
+          <select id="settingThemeSelect" onchange="setTheme(this.value)">
+            <option value="auto">🌗 Auto (follow system)</option>
+            <option value="light">☀️ Light</option>
+            <option value="dark">🌙 Dark</option>
+            <option value="hc">◼ High contrast</option>
+            <option value="amber">🟧 Amber CRT</option>
+            <option value="green">🟩 Green CRT</option>
+          </select>
+          <span class="hint">Color theme for the whole app. “Auto” follows your OS light/dark setting.</span>
+        </div>
         <div class="settings-row">
           <input
             type="checkbox"
@@ -2598,10 +2830,12 @@
               <button type="button" role="menuitem" onclick="closeToolsMenu();openLogModal()">📒 <span>Logbook <kbd>l</kbd></span></button>
               <button type="button" role="menuitem" onclick="closeToolsMenu();openRepModal()">📡 <span>US repeater finder</span></button>
               <button type="button" role="menuitem" onclick="closeToolsMenu();openCompare()">⚖ <span>Compare drawer <kbd>x</kbd></span></button>
+              <button type="button" role="menuitem" onclick="closeToolsMenu();openSceneModal()">🧭 <span>Trip / scene planner</span></button>
               <button type="button" role="menuitem" onclick="closeToolsMenu();window.print()">🖨 <span>Print <kbd>p</kbd></span></button>
               <button type="button" role="menuitem" onclick="closeToolsMenu();startTour()">🌍 <span>Onboarding tour</span></button>
               <button type="button" role="menuitem" id="toolsMenu_kbd" onclick="closeToolsMenu();openHelpModal()">❔ <span>Keyboard shortcuts <kbd>?</kbd></span></button>
               <button type="button" role="menuitem" onclick="closeToolsMenu();cycleRegion()">🌐 <span>Switch ITU region</span></button>
+              <button type="button" role="menuitem" onclick="closeToolsMenu();openChangelogModal()">📝 <span>What's new / changelog</span></button>
               <button type="button" role="menuitem" onclick="closeToolsMenu();openSettings()">⚙ <span>Settings</span></button>
             </div>
           </div>
@@ -2635,16 +2869,6 @@
             onclick="openHelpModal()"
           >
             <span aria-hidden="true">?</span>
-          </button>
-          <button
-            id="themeToggle"
-            class="theme-toggle theme-right"
-            type="button"
-            aria-label="Toggle color theme"
-            title="Cycle theme: Auto / Light / Dark / High contrast / Amber / Green"
-          >
-            <span id="themeToggleIcon" aria-hidden="true">🌗</span>
-            <span>Theme:&nbsp;<span id="themeToggleLabel">Auto</span></span>
           </button>
         </div>
       </header>
@@ -2731,6 +2955,14 @@
           onclick="setFilter('all', this)"
         >
           All
+        </button>
+        <button
+          class="filter-btn filter-fav"
+          data-cat="favorites"
+          onclick="setFilter('favorites', this)"
+          title="Show only favorited bands (★)"
+        >
+          ★ Favorites
         </button>
         <button
           class="filter-btn"
@@ -2863,6 +3095,67 @@
       </div>
 
       <div class="container-list" id="band-list"></div>
+      <footer class="app-foot" data-no-acro>
+        <button type="button" class="foot-link" onclick="openChangelogModal()" title="Show changelog">
+          <span id="footVersion">v—</span>
+        </button>
+        <span class="foot-sep" aria-hidden="true">·</span>
+        <span id="footUpdated">updated —</span>
+      </footer>
+    </div>
+
+    <div
+      id="sceneModal"
+      class="modal-backdrop"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sceneModalTitle"
+      onclick="if (event.target === this) closeSceneModal()"
+    >
+      <div class="modal-card" role="document" style="max-width:880px">
+        <button type="button" class="modal-close" aria-label="Close trip planner" onclick="closeSceneModal()">×</button>
+        <div class="modal-head">
+          <h2 id="sceneModalTitle">🧭 Trip / scene planner</h2>
+          <span class="freq">What can I hear, and what should I bring?</span>
+        </div>
+        <div class="modal-section">
+          <p style="margin:0 0 10px;color:var(--color-text-secondary);font-size:13px">
+            Type where you're going (e.g. <em>cruise ship</em>, <em>airport</em>, <em>national park</em>, <em>marathon</em>) or pick a scenario.
+            You'll get a curated list of bands you're likely to hear plus a packing list of recommended gear.
+          </p>
+          <div class="scene-search" data-no-acro>
+            <input id="sceneInput" type="text" autocomplete="off" spellcheck="false"
+              placeholder="Where are you going? (cruise, airport, mountain, urban, marathon…)"
+              oninput="_sceneFilter()" onkeydown="if(event.key==='Escape'){this.value='';_sceneFilter()}" />
+            <button type="button" id="sceneClear" onclick="document.getElementById('sceneInput').value='';_sceneFilter()" title="Clear">×</button>
+          </div>
+          <div class="scene-grid" id="sceneGrid"></div>
+        </div>
+        <div class="modal-section" id="sceneDetail" hidden>
+          <button type="button" class="scene-back" onclick="_sceneShowGrid()">← Back to scenarios</button>
+          <div id="sceneDetailBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="changelogModal"
+      class="modal-backdrop"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="changelogModalTitle"
+      onclick="if (event.target === this) closeChangelogModal()"
+    >
+      <div class="modal-card" role="document">
+        <button type="button" class="modal-close" aria-label="Close changelog" onclick="closeChangelogModal()">×</button>
+        <div class="modal-head">
+          <h2 id="changelogModalTitle">📝 Changelog</h2>
+          <span class="freq" id="changelogVersion"></span>
+        </div>
+        <div class="modal-section" id="changelogContent"></div>
+      </div>
     </div>
 
     <div
@@ -3377,6 +3670,16 @@
           <button type="button" onclick="closeCompare()" aria-label="Close">×</button>
         </div>
       </div>
+      <div class="compare-presets" id="comparePresets" data-no-acro>
+        <div class="cp-row">
+          <label class="cp-label" for="comparePresetSelect">Presets:</label>
+          <select id="comparePresetSelect" onchange="loadComparePreset(this.value)">
+            <option value="">— load saved set —</option>
+          </select>
+          <button type="button" class="cp-btn" onclick="saveComparePreset()" title="Save current pinned bands as a named preset">💾 Save</button>
+          <button type="button" class="cp-btn cp-del" id="comparePresetDel" onclick="deleteComparePreset()" title="Delete the loaded preset" hidden>🗑 Delete</button>
+        </div>
+      </div>
       <div class="body" id="compareBody"></div>
     </aside>
 
@@ -3473,6 +3776,45 @@
     </div>
 
     <script>
+      /* ---------- App version + changelog (data-driven) ---------- */
+      const APP_VERSION = '7.1.0'
+      const CHANGELOG = [
+        { version: '7.1.0', date: '2026-04-28', notes: [
+          '🧭 Trip / scene planner: pick where you\'re going (cruise, airport, park, marathon, storm…) and get a curated band list + packing-list of recommended gear. One click pins the lot to the compare drawer.',
+        ]},
+        { version: '7.0.0', date: '2026-04-28', notes: [
+          'Rebrand: ◉ ∿∿∿ ROUGE FREQ ∿∿∿ — centered, larger header.',
+          'Compare drawer: stacked-card layout on phones (no more 3-column squeeze).',
+          'Mobile cleanup: tools consolidated into 🛠 menu, Theme button right-aligned.',
+          'Compare presets: save / load named pin sets.',
+          '★ Favorites filter button.',
+          'Changelog modal + version stamp in footer.',
+          'PWA share target: receive a frequency from another app and auto-jump.',
+          'Calculator self-tests behind ?dev=1.',
+        ]},
+        { version: '6.0.0', date: '2026-03-15', notes: [
+          'Phase 6: compare drawer, US repeater finder, mini-waterfall (synthetic + live mic), PWA install + offline.',
+          'Color palette picker (Classic / Inferno / Viridis / Grayscale).',
+          'Hover frequency readout on waterfall.',
+        ]},
+        { version: '5.0.0', date: '2026-02-08', notes: [
+          'Phase 5: Logbook, frequency jump, space weather, onboarding tour, worked-bands progress.',
+          'High-contrast, Amber CRT, Green phosphor themes.',
+        ]},
+        { version: '4.0.0', date: '2026-01-12', notes: [
+          'Phase 4: toasts, ⌘K command palette, propagation badge, ITU region selector, tone generator.',
+        ]},
+        { version: '3.0.0', date: '2025-12-04', notes: [
+          'Phase 3: header clock + Maidenhead grid, per-band notes, reference tables, print stylesheet.',
+        ]},
+        { version: '2.0.0', date: '2025-11-02', notes: [
+          'Phase 2: deep-dive band modals (mode / SDR / antenna / software), favorites, calculator.',
+        ]},
+        { version: '1.0.0', date: '2025-10-01', notes: [
+          'Initial release: ELF–6 GHz band guide, log-scaled spectrum bar, search, category filters, themes.',
+        ]},
+      ]
+
       // Lowered floor to 10 Hz so ELF/VLF (submarine, time stations) fit on the
       // log-scaled spectrum bar. Range now spans 10 Hz – 6 GHz (~8.8 decades).
       const F_MIN = Math.log10(10)
@@ -5233,7 +5575,9 @@
         let filtered =
           activeFilter === 'all'
             ? bands
-            : bands.filter(b => b.cat === activeFilter)
+            : activeFilter === 'favorites'
+              ? bands.filter(b => isFavorite(b.id))
+              : bands.filter(b => b.cat === activeFilter)
         filtered = filtered.filter(_bandMatchesSearch)
 
         // Pin favorites to the top (stable order otherwise).
@@ -5715,6 +6059,8 @@
           if (typeof closeLogModal === 'function') closeLogModal()
           if (typeof closeRepModal === 'function') closeRepModal()
           if (typeof closeCompare === 'function') closeCompare()
+          if (typeof closeSceneModal === 'function') closeSceneModal()
+          if (typeof closeChangelogModal === 'function') closeChangelogModal()
           if (typeof endTour === 'function') endTour()
         }
       })
@@ -6052,6 +6398,402 @@
       }
       window.openHelpModal = openHelpModal
       window.closeHelpModal = closeHelpModal
+
+      /* ---------- Changelog modal ---------- */
+      let _changelogLastFocus = null
+      function openChangelogModal() {
+        const m = document.getElementById('changelogModal')
+        if (!m) return
+        _changelogLastFocus = document.activeElement
+        const ver = document.getElementById('changelogVersion')
+        if (ver) ver.textContent = 'v' + APP_VERSION
+        const body = document.getElementById('changelogContent')
+        if (body) {
+          body.innerHTML = '<ul class="changelog-list">' + CHANGELOG.map(entry =>
+            '<li><div class="cl-ver">v' + escHtml(entry.version) +
+            ' <span class="cl-date">' + escHtml(entry.date) + '</span></div>' +
+            '<ul>' + entry.notes.map(n => '<li>' + escHtml(n) + '</li>').join('') + '</ul></li>'
+          ).join('') + '</ul>'
+        }
+        m.hidden = false
+        document.documentElement.style.overflow = 'hidden'
+        const close = m.querySelector('.modal-close')
+        if (close) close.focus()
+      }
+      function closeChangelogModal() {
+        const m = document.getElementById('changelogModal')
+        if (!m || m.hidden) return
+        m.hidden = true
+        if (_anyModalOpen() === false) document.documentElement.style.overflow = ''
+        if (_changelogLastFocus && _changelogLastFocus.focus) _changelogLastFocus.focus()
+      }
+      window.openChangelogModal = openChangelogModal
+      window.closeChangelogModal = closeChangelogModal
+      // Stamp footer (latest entry's date is "updated" date)
+      ;(function _stampFooter() {
+        const latest = CHANGELOG[0] || { version: APP_VERSION, date: '' }
+        const v = document.getElementById('footVersion'); if (v) v.textContent = 'v' + APP_VERSION
+        const u = document.getElementById('footUpdated'); if (u) u.textContent = 'updated ' + (latest.date || 'recently')
+      })()
+
+      /* ---------- Trip / scene planner ---------- */
+      // Each scene: id, name, icon, tag, desc, keywords (for search), bandIds (linked to bands[]),
+      // extras (band-like rows for things not in bands[]), gear (essential/optional), tips.
+      const SCENES = [
+        {
+          id: 'roadtrip',
+          name: 'Road trip / interstate',
+          icon: '🚗',
+          tag: 'Mobile',
+          desc: 'Long highway drive — truckers, NOAA wx, ham repeaters, public-safety trunked systems, river-crossing marine, railroad AAR.',
+          keywords: ['road', 'roadtrip', 'road trip', 'drive', 'driving', 'highway', 'interstate', 'i-65', 'i-40', 'i-30', 'i-75', 'i-70', 'truck', 'cb', 'trip', 'cross country'],
+          bandIds: ['noaa-wx', 'cb-27', 'frs-gmrs', 'mururs', 'ham-2m', 'ham-70cm', 'p25-public-safety', 'airband-vhf', 'marine-vhf', 'fm-bcast', 'mw-bc'],
+          extras: [
+            { name: 'Marine VHF (river crossings: Ohio, Mississippi, Arkansas, Tennessee R.)', freq: 'ch 16: 156.800 / ch 13: 156.650', cat: 'maritime', why: 'Towboat & lock comms — busy at every major US river bridge.' },
+            { name: 'Railroad AAR road channels (paralleling tracks)', freq: '160.215 – 161.565 MHz (15 kHz steps)', cat: 'safety', why: 'CSX 160.230/.860 · NS 160.950/161.190 · UP 160.470/.890 · BNSF 161.100/.160.' },
+            { name: 'State DOT / highway maintenance', freq: '47 MHz LB / 150–160 MHz / 450–470 MHz', cat: 'safety', why: 'KYTC, TDOT, ARDOT, MSDOT — wreck cleanup, snow plows, mowing crews.' },
+            { name: 'Federal interop (VCALL10 / VTAC)', freq: '155.7525 / 155.4750 MHz', cat: 'safety', why: 'Multi-agency incidents on interstates.' },
+            { name: 'Statewide trunked P25 systems', freq: '700 / 800 MHz band', cat: 'safety', why: 'KY MetroSafe, TN STARS, AR AWIN, MS WIN — load site CCs from RadioReference.com.' },
+          ],
+          gear: [
+            { name: 'Uniden SDS100 / BCD436HP scanner (P25 Phase 1+2 capable)', tier: 'essential', why: 'Most state systems are P25 Phase 2 trunked — older scanners can\'t follow.' },
+            { name: 'NMO mag-mount dual-band whip on the roof', tier: 'essential', why: '5–10× the range of a rubber duck. Stick it in the middle of the roof.' },
+            { name: 'NOAA SAME weather radio (or HT with WX RX)', tier: 'essential', why: 'Tornado / severe-storm alerts that follow you across counties.' },
+            { name: 'CB radio (Cobra 29 / Uniden Bearcat)', tier: 'essential', why: 'Ch 19 still alive on long-haul interstates for wrecks, smokeys, road closures.' },
+            { name: 'Dual-band ham HT or mobile (FT-65 / FTM-300)', tier: 'essential', why: 'Hit a 2m repeater every 30–50 mi for travel info & emergencies.' },
+            { name: 'Pre-loaded RadioReference talkgroup CSV per county', tier: 'essential', why: 'Trunked systems are useless without IDs. Download before you leave Wi-Fi.' },
+            { name: 'Offline RepeaterBook (.csv or app)', tier: 'essential', why: 'Cell coverage drops in rural KY/AR — load all 4 states ahead of time.' },
+            { name: 'RTL-SDR + laptop / tablet', tier: 'optional', why: 'ADS-B near MEM/SDF/BNA/LIT, AIS at river crossings, hotel SDR# scanning.' },
+            { name: 'Phone mount + RadioReference / Broadcastify Premium', tier: 'optional', why: 'Listen to feeds for areas your scanner can\'t reach.' },
+            { name: 'Printed cheat sheet of priority freqs', tier: 'optional', why: 'Phone batteries die; paper doesn\'t.' },
+          ],
+          tips: 'Priority scan: NOAA WX (162.400–162.550, 7 channels), CB ch 19 (27.185 AM), CB ch 9 (27.065 AM), 2m calling 146.520, 70cm calling 446.000, marine ch 16 (156.800) at river crossings, 121.5 MHz AM near airports. Statewide P25 systems mean you can stay locked on one trunked system for hundreds of miles (TN STARS, AR AWIN). Storm season? Add the local SKYWARN 2m repeater for each metro you pass.',
+        },
+        {
+          id: 'cruise',
+          name: 'Cruise ship / ocean',
+          icon: '🚢',
+          tag: 'Maritime',
+          desc: 'On a cruise ship at sea or in port — ship comms, bridge ops, port traffic, rescue.',
+          keywords: ['cruise', 'ship', 'ocean', 'sea', 'boat', 'maritime', 'caribbean', 'alaska', 'port', 'harbor', 'yacht', 'sailing'],
+          bandIds: ['marine-vhf', 'gmdss-dsc', 'navtex', 'ais', 'epirb', 'maritime-mf-hf', 'ham-20m', 'ham-40m', 'ham-17m', 'sw-bcast', 'wefax'],
+          extras: [
+            { name: 'Ship internal UHF crew radios', freq: '450–470 MHz', cat: 'safety', why: 'Crew comms (housekeeping, security, deck) — usually FM analog or DMR.' },
+            { name: 'Ship satellite uplinks (Inmarsat, Iridium)', freq: '1.5 / 1.6 GHz', cat: 'satellite', why: 'You can\'t decode but you may see the carriers on a wide SDR.' },
+          ],
+          gear: [
+            { name: 'Marine handheld VHF radio (e.g. Standard Horizon HX210)', tier: 'essential', why: 'Lets you listen to ch 16 (distress), 13 (bridge-to-bridge), and port channels.' },
+            { name: 'RTL-SDR Blog v4 + laptop', tier: 'essential', why: 'AIS at 161.975/162.025 MHz, marine VHF, weather fax on HF.' },
+            { name: 'Telescoping whip antenna (~50 cm)', tier: 'essential', why: 'Marine VHF tunes around λ/4 ≈ 47 cm at 156 MHz.' },
+            { name: 'Portable HF receiver (Tecsun PL-330 / 990 / Eton Elite)', tier: 'optional', why: 'SW broadcast, ham HF, WWV/CHU time signals at sea.' },
+            { name: 'Magnetic-mount mobile antenna', tier: 'optional', why: 'Stick to a metal balcony rail for much better marine VHF range.' },
+            { name: 'AIS dongle / dAISy HAT', tier: 'optional', why: 'Real-time map of nearby ships on OpenCPN.' },
+            { name: 'Earbuds + 3.5mm splitter', tier: 'optional', why: 'Don\'t annoy your cabin-mate.' },
+          ],
+          tips: 'Ch 16 (156.800 MHz) is monitored 24/7 for distress. Ch 13 is bridge-to-bridge. AIS gives you ship positions, names, course, and speed. If you\'re near land, also try local port-control channels (varies by country). HF broadcast and ham works well at sea — no urban noise.',
+        },
+        {
+          id: 'airport',
+          name: 'Airport / airshow',
+          icon: '✈️',
+          tag: 'Aviation',
+          desc: 'Near an airport, on a flight, or at an airshow — ATC, ATIS, ground ops.',
+          keywords: ['airport', 'plane', 'flight', 'airshow', 'aviation', 'tower', 'airliner', 'pilot', 'atc', 'ads-b'],
+          bandIds: ['airband-vhf', 'airband-uhf-mil', 'ads-b', 'acars', 'hf-aero', 'wx-radar', 'gps-l1'],
+          extras: [
+            { name: 'Airport ground crew UHF', freq: '450–470 MHz', cat: 'safety', why: 'Ramp / fuel / ops crews — usually FM analog or NXDN.' },
+          ],
+          gear: [
+            { name: 'RTL-SDR Blog v4 + laptop or RPi', tier: 'essential', why: 'Decode ADS-B (1090 MHz) → live aircraft map. Run dump1090.' },
+            { name: '1090 MHz tuned antenna (DPD or stock magmount)', tier: 'essential', why: 'Boosts ADS-B range from 30 km to 200+ km.' },
+            { name: 'Airband scanner or RTL-SDR for 118–137 MHz (AM)', tier: 'essential', why: 'Tower / ground / ATIS / approach.' },
+            { name: 'Bring an airband-printed frequency list (LiveATC.net)', tier: 'optional', why: 'Find your local tower, ground, ATIS frequencies before you go.' },
+            { name: 'Camera + 200mm+ lens', tier: 'optional', why: 'Plane spotting pairs perfectly with ADS-B.' },
+            { name: 'Discone or wideband VHF/UHF antenna', tier: 'optional', why: 'Hear airshow performer freqs (often 123.45 MHz) and military UHF AM.' },
+          ],
+          tips: 'Civilian airband is 118–137 MHz AM. Military airband is 225–400 MHz AM. ADS-B at 1090 MHz gives you tail numbers, altitude, speed. ACARS at 131.55/130.025/etc. carries text msgs. Try 121.5 MHz for emergency, 123.45 for air-to-air chat at airshows.',
+        },
+        {
+          id: 'urban',
+          name: 'City / urban',
+          icon: '🏙',
+          tag: 'Mixed',
+          desc: 'In a major city — public safety, transit, taxis, FM/TV, cellular, FRS/GMRS.',
+          keywords: ['city', 'urban', 'downtown', 'metro', 'subway', 'taxi', 'uber', 'police', 'fire', 'ems', 'transit', 'bus'],
+          bandIds: ['frs-gmrs', 'ham-2m', 'ham-70cm', 'p25-public-safety', 'fm-bcast', 'tv-vhf-low', 'tv-vhf-high', 'tv-uhf', 'lte-band-2', 'lte-band-4', 'lte-band-12', 'noaa-wx', 'mururs', 'pmr446'],
+          extras: [
+            { name: 'Taxi / dispatch (UHF business)', freq: '450–470 MHz', cat: 'safety', why: 'Many cabs / delivery / construction crews still use UHF FM.' },
+            { name: 'Transit (rail, bus dispatch)', freq: '160–161 MHz / 450–470 MHz', cat: 'safety', why: 'Subway, light rail, bus dispatchers.' },
+          ],
+          gear: [
+            { name: 'Uniden SDS100 / BCD436HP scanner', tier: 'essential', why: 'Decodes P25 Phase 1/2, DMR, NXDN — most modern public-safety systems.' },
+            { name: 'Dual-band HT (Yaesu FT-65, Baofeng UV-5R)', tier: 'essential', why: 'Listen to local 2m/70cm ham repeaters and FRS/GMRS.' },
+            { name: 'Earbuds (low-profile)', tier: 'essential', why: 'Don\'t look like you\'re scanning cops on the subway.' },
+            { name: 'Discone or wideband whip', tier: 'optional', why: 'Better reception inside hotel rooms.' },
+            { name: 'Pre-loaded Radio Reference / OpenMHz frequencies', tier: 'optional', why: 'Local trunked talkgroup IDs vary city-to-city.' },
+            { name: 'Pocket FM/AM portable (CC Skywave)', tier: 'optional', why: 'NOAA wx, local AM news, SW at the hotel window.' },
+          ],
+          tips: 'Most US public safety has moved to P25 trunked systems. Encryption is increasingly common (esp. police TAC channels). FRS/GMRS at 462/467 MHz is the easiest "find someone right now" listen. Check radioreference.com for your destination before traveling.',
+        },
+        {
+          id: 'park',
+          name: 'National / state park',
+          icon: '🏞',
+          tag: 'Outdoors',
+          desc: 'Hiking, camping, or POTA — ham HF, FRS, NOAA wx, park ops.',
+          keywords: ['park', 'national park', 'hike', 'hiking', 'camping', 'forest', 'wilderness', 'pota', 'sota', 'mountain', 'backpack', 'trail'],
+          bandIds: ['ham-20m', 'ham-40m', 'ham-17m', 'ham-15m', 'ham-2m', 'ham-70cm', 'frs-gmrs', 'noaa-wx', 'murs', 'sw-bcast'],
+          extras: [
+            { name: 'Park ranger comms', freq: '162–174 MHz (federal VHF) / 406–420 MHz', cat: 'safety', why: 'NPS / Forest Service / BLM use federal VHF and UHF — increasingly P25.' },
+          ],
+          gear: [
+            { name: 'Dual-band ham HT (FT-65 / FT5DR)', tier: 'essential', why: 'Hit a 2m repeater for ride coordination + emergencies.' },
+            { name: 'FRS/GMRS family pack', tier: 'essential', why: 'Talk to your hiking party (1–3 mi).' },
+            { name: 'NOAA weather radio (or HT with WX RX)', tier: 'essential', why: 'Storm warnings save lives in the backcountry.' },
+            { name: 'Portable HF rig (Elecraft KX2 / Xiegu G90 / IC-705)', tier: 'optional', why: 'POTA activations on 20/40m. Add a wire EFHW.' },
+            { name: 'EFHW or random-wire antenna + tuner', tier: 'optional', why: 'Easy to throw over a tree branch.' },
+            { name: 'Garmin inReach or PLB', tier: 'optional', why: 'Real emergency comms — RF won\'t reach when you need it most.' },
+          ],
+          tips: 'Park HF activity peaks late afternoon UTC on 20m/40m FT8. Most parks have 2m repeater coverage somewhere — use repeaterbook.com offline. NOAA WX is on 162.400–162.550 MHz across all of North America.',
+        },
+        {
+          id: 'marathon',
+          name: 'Marathon / race / event',
+          icon: '🏃',
+          tag: 'Public safety',
+          desc: 'At a marathon, parade, or major event — race operations, EMS, security.',
+          keywords: ['marathon', 'race', 'parade', 'event', 'concert', 'festival', 'sports', 'stadium', 'security', 'ems'],
+          bandIds: ['ham-2m', 'frs-gmrs', 'p25-public-safety', 'mururs'],
+          extras: [
+            { name: 'Event production crew (UHF business / DMR)', freq: '450–470 MHz', cat: 'safety', why: 'Stage / lighting / logistics crews.' },
+            { name: 'Wireless mics & IEMs', freq: '470–608 MHz', cat: 'broadcast', why: 'Performance audio — UHF wireless mics live in the TV white space.' },
+          ],
+          gear: [
+            { name: 'Dual-band HT', tier: 'essential', why: 'Many big races use the local ham club for course communications — listen, don\'t transmit.' },
+            { name: 'Trunking scanner (SDS100)', tier: 'essential', why: 'Race ops + city public safety overlay.' },
+            { name: 'Earpiece (clear acoustic tube)', tier: 'essential', why: 'Crowd noise + discreet.' },
+          ],
+          tips: 'Big marathons (Boston, NYC, Chicago) coordinate course comms via local ham clubs on simplex + repeaters. Check the event\'s amateur-radio liaison page for assigned freqs.',
+        },
+        {
+          id: 'rural',
+          name: 'Rural / quiet site',
+          icon: '🌾',
+          tag: 'Low-noise',
+          desc: 'Out in the country away from RF noise — DXing, weak-signal, ELF/VLF.',
+          keywords: ['rural', 'country', 'farm', 'quiet', 'dx', 'dxing', 'desert', 'remote', 'qrn', 'low noise'],
+          bandIds: ['elf-sub', 'vlf-time', 'longwave-bc', 'mw-bc', 'ham-160m', 'ham-80m', 'ham-40m', 'ham-20m', 'ham-15m', 'ham-10m', 'ham-6m', 'sw-bcast', 'wwv'],
+          extras: [],
+          gear: [
+            { name: 'HF transceiver or quality SDR (Airspy HF+ Discovery, RSPdx)', tier: 'essential', why: 'Quiet site = you\'ll hear signals impossible in the city.' },
+            { name: 'Long wire or dipole (60–130 ft)', tier: 'essential', why: 'Bigger antenna in the clear = much better LF/MF/HF.' },
+            { name: 'Common-mode choke', tier: 'essential', why: 'Even rural sites have some local noise — choke kills it.' },
+            { name: 'Active loop (Wellbrook ALA-1530, MLA-30+)', tier: 'optional', why: 'Excellent for LF/MF/lower HF, easy to set up.' },
+            { name: 'Beverage or BoG (beverage on ground)', tier: 'optional', why: 'Directional, ultra-low-noise RX antenna for LF/MF DX.' },
+            { name: 'Soundcard + magnetic loop for ELF/VLF', tier: 'optional', why: 'Hear ZEVS, lightning sferics, schumann resonance.' },
+          ],
+          tips: 'Best low-band DX is around your local sunrise/sunset (gray-line). Get away from solar panels, electric fences, and ethernet-over-power adapters — they\'re the worst HF noise sources.',
+        },
+        {
+          id: 'beach',
+          name: 'Beach / coast',
+          icon: '🏖',
+          tag: 'Coastal',
+          desc: 'At the beach or coastal area — marine VHF, coast guard, weather.',
+          keywords: ['beach', 'coast', 'shore', 'lighthouse', 'pier', 'fishing', 'gulf'],
+          bandIds: ['marine-vhf', 'ais', 'navtex', 'noaa-wx', 'ham-2m'],
+          extras: [
+            { name: 'USCG Auxiliary / lifeguard', freq: '156–162 MHz / 450–470 MHz', cat: 'safety', why: 'Beach patrol on UHF business; USCG on marine VHF.' },
+          ],
+          gear: [
+            { name: 'Marine handheld VHF radio', tier: 'essential', why: 'Channel 16, 22A (USCG working), local port channels.' },
+            { name: 'RTL-SDR + laptop', tier: 'optional', why: 'AIS — see fishing fleet, container ships, tankers offshore.' },
+            { name: 'NOAA weather radio', tier: 'optional', why: 'Marine forecast + small craft advisories.' },
+          ],
+          tips: 'Saltwater is great for VHF — line-of-sight is nearly perfect. Sit on a pier or seawall for the best AIS reception (50+ mile range from a coastal high spot).',
+        },
+        {
+          id: 'border',
+          name: 'Border / international',
+          icon: '🌍',
+          tag: 'Foreign',
+          desc: 'Traveling abroad — different ITU region, different services, customs!',
+          keywords: ['border', 'international', 'travel', 'overseas', 'europe', 'asia', 'mexico', 'canada', 'foreign'],
+          bandIds: ['ham-40m', 'ham-20m', 'sw-bcast', 'pmr446', 'fm-bcast', 'mw-bc'],
+          extras: [
+            { name: 'PMR446 (EU equivalent of FRS)', freq: '446 MHz', cat: 'ism', why: 'License-free 0.5W FM — common in Europe.' },
+            { name: 'CB 27 MHz', freq: '26.965–27.405 MHz', cat: 'ism', why: 'Still widely used in EU for trucking.' },
+          ],
+          gear: [
+            { name: 'Compact SW receiver (Tecsun PL-330)', tier: 'essential', why: 'AC adapter compatible with foreign mains. Hear local AM/FM/SW.' },
+            { name: 'Small RTL-SDR + tablet', tier: 'optional', why: 'Easy to pack, works with Android via OTG.' },
+            { name: 'Reciprocal ham license docs (CEPT / IARP)', tier: 'optional', why: 'If transmitting — many countries honor US license under CEPT/IARP.' },
+          ],
+          tips: 'Region 1 (EU/Africa) HF allocations differ slightly from Region 2 (Americas) — toggle the ITU region in this app. Some HF gear is restricted at customs in certain countries (UAE, Saudi Arabia, China). Pack receivers, not transmitters, when in doubt.',
+        },
+        {
+          id: 'storm',
+          name: 'Storm / emergency',
+          icon: '⛈',
+          tag: 'Emergency',
+          desc: 'Severe weather, hurricane, wildfire, power outage — emergency comms.',
+          keywords: ['storm', 'emergency', 'hurricane', 'tornado', 'fire', 'wildfire', 'disaster', 'outage', 'blackout', 'flood', 'earthquake'],
+          bandIds: ['noaa-wx', 'ham-2m', 'ham-70cm', 'ham-40m', 'ham-80m', 'frs-gmrs', 'mw-bc', 'sw-bcast'],
+          extras: [
+            { name: 'SKYWARN / ARES / RACES nets', freq: 'Local 2m repeaters', cat: 'ham', why: 'Trained spotters report storms in real-time.' },
+            { name: 'Hurricane Watch Net', freq: '14.325 MHz USB / 7.268 MHz LSB', cat: 'ham', why: 'Active during active Atlantic/Caribbean hurricanes.' },
+          ],
+          gear: [
+            { name: 'NOAA SAME weather radio with battery backup', tier: 'essential', why: 'Auto-alerts on watches/warnings for your county.' },
+            { name: 'Dual-band ham HT + spare batteries', tier: 'essential', why: 'When cell towers fail, ham repeaters often stay up on backup power.' },
+            { name: 'Hand-crank AM/FM/SW radio', tier: 'essential', why: 'No batteries needed.' },
+            { name: 'Portable HF rig + battery', tier: 'optional', why: 'When the local repeater fails too, HF reaches outside the disaster area.' },
+            { name: 'Printed local repeater list', tier: 'optional', why: 'Internet may be down.' },
+          ],
+          tips: 'NOAA WX (162.400–162.550 MHz) covers all of NA. Hurricane Watch Net activates 24/48 hr before landfall on 14.325 MHz USB. SKYWARN nets activate on local 2m repeaters during severe wx watches.',
+        },
+        {
+          id: 'home',
+          name: 'Home shack',
+          icon: '🏠',
+          tag: 'Reference',
+          desc: 'Just at home — your standard everyday listening setup.',
+          keywords: ['home', 'shack', 'house', 'apartment', 'condo', 'residential'],
+          bandIds: ['ham-40m', 'ham-20m', 'ham-2m', 'ham-70cm', 'fm-bcast', 'noaa-wx', 'frs-gmrs', 'p25-public-safety'],
+          extras: [],
+          gear: [
+            { name: 'Whatever you already own', tier: 'essential', why: '— ' },
+          ],
+          tips: 'Use the search and filter bar above to explore bands. Pin favorites with the ⚖ button.',
+        },
+      ]
+
+      function _sceneFindBand(id) {
+        return bands.find(b => b.id === id) || null
+      }
+      function _sceneRenderGrid(filter) {
+        const grid = document.getElementById('sceneGrid')
+        if (!grid) return
+        const q = (filter || '').trim().toLowerCase()
+        const matches = q
+          ? SCENES.filter(s =>
+              s.name.toLowerCase().includes(q) ||
+              s.desc.toLowerCase().includes(q) ||
+              s.keywords.some(k => k.includes(q) || q.includes(k)))
+          : SCENES
+        if (!matches.length) {
+          grid.innerHTML = '<div class="scene-empty">No scenarios match "' + escHtml(q) + '". Try: cruise, airport, park, city, storm, beach, marathon, rural, border…</div>'
+          return
+        }
+        grid.innerHTML = matches.map(s =>
+          '<button type="button" class="scene-card" onclick="openSceneDetail(\'' + escHtml(s.id) + '\')">' +
+          '<div class="sc-icon" aria-hidden="true">' + escHtml(s.icon) + '</div>' +
+          '<div class="sc-tag">' + escHtml(s.tag) + '</div>' +
+          '<div class="sc-name">' + escHtml(s.name) + '</div>' +
+          '<div class="sc-desc">' + escHtml(s.desc) + '</div>' +
+          '</button>',
+        ).join('')
+      }
+      function _sceneFilter() { _sceneRenderGrid(document.getElementById('sceneInput').value) }
+      function _sceneShowGrid() {
+        document.getElementById('sceneDetail').hidden = true
+        document.getElementById('sceneGrid').parentElement.hidden = false
+        const inp = document.getElementById('sceneInput'); if (inp) inp.focus()
+      }
+      function openSceneDetail(id) {
+        const s = SCENES.find(x => x.id === id)
+        if (!s) return
+        const body = document.getElementById('sceneDetailBody')
+        const linked = (s.bandIds || []).map(_sceneFindBand).filter(Boolean)
+        const extras = s.extras || []
+        const gear = s.gear || []
+        const bandsHtml = (linked.length || extras.length)
+          ? linked.map(b => {
+              const color = CAT_COLOR[b.cat] || 'var(--color-text-tertiary)'
+              return '<button type="button" class="sd-band" onclick="closeSceneModal();clickBand(\'' + escHtml(b.id) + '\')" title="Open band detail">' +
+                '<span class="sd-dot" style="background:' + color + '"></span>' +
+                '<span class="sd-band-row">' +
+                '<span><span class="sd-band-name">' + escHtml(b.name) + '</span> <span class="sd-band-freq">' + escHtml(b.freq) + '</span></span>' +
+                '</span>' +
+                '</button>'
+            }).join('') +
+            extras.map(x => {
+              const color = CAT_COLOR[x.cat] || 'var(--color-text-tertiary)'
+              return '<div class="sd-band" style="cursor:default">' +
+                '<span class="sd-dot" style="background:' + color + '"></span>' +
+                '<span class="sd-band-row">' +
+                '<span><span class="sd-band-name">' + escHtml(x.name) + '</span> <span class="sd-band-freq">' + escHtml(x.freq) + '</span></span>' +
+                (x.why ? '<span class="sd-band-why">' + escHtml(x.why) + '</span>' : '') +
+                '</span>' +
+                '</div>'
+            }).join('')
+          : '<div class="sd-tips">No specific bands tagged for this scenario yet.</div>'
+        const gearHtml = gear.length
+          ? '<ul class="sd-gear">' + gear.map(g =>
+              '<li class="' + (g.tier === 'essential' ? 'essential' : 'optional') + '">' +
+              '<span class="g-tag">' + (g.tier === 'essential' ? 'Bring' : 'Optional') + '</span>' +
+              '<strong>' + escHtml(g.name) + '</strong>' +
+              (g.why ? ' — <span style="color:var(--color-text-secondary)">' + escHtml(g.why) + '</span>' : '') +
+              '</li>',
+            ).join('') + '</ul>'
+          : ''
+        const linkedIds = linked.map(b => b.id)
+        body.innerHTML =
+          '<div class="scene-detail">' +
+            '<h3 style="display:flex;align-items:center;gap:8px"><span style="font-size:24px">' + escHtml(s.icon) + '</span>' + escHtml(s.name) + '</h3>' +
+            '<div class="sd-summary">' + escHtml(s.desc) + '</div>' +
+            '<h3>📡 What you\'ll likely hear</h3>' +
+            bandsHtml +
+            '<h3>🎒 Recommended gear</h3>' +
+            gearHtml +
+            (s.tips ? '<h3>💡 Tips</h3><div class="sd-tips">' + escHtml(s.tips) + '</div>' : '') +
+            '<div class="sd-actions">' +
+              (linkedIds.length ? '<button type="button" class="primary" onclick="_scenePinAll(' + JSON.stringify(linkedIds).replace(/"/g, '&quot;') + ')">⚖ Pin all to compare drawer</button>' : '') +
+              '<button type="button" onclick="_sceneShowGrid()">← Back</button>' +
+            '</div>' +
+          '</div>'
+        document.getElementById('sceneGrid').parentElement.hidden = true
+        document.getElementById('sceneDetail').hidden = false
+        document.getElementById('sceneDetail').scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      function _scenePinAll(ids) {
+        if (!Array.isArray(ids) || !ids.length) return
+        let added = 0
+        for (const id of ids) {
+          if (pinnedBands.length >= COMPARE_MAX) break
+          if (!isPinned(id)) { pinnedBands.push(id); added++ }
+        }
+        _persistPinned()
+        if (typeof _updateCompareFab === 'function') _updateCompareFab()
+        if (typeof _renderCompare === 'function') _renderCompare()
+        renderList()
+        showToast('Pinned ' + added + ' band(s)', 'Open ⚖ Compare to view side-by-side.', 'success', 2200)
+      }
+      let _sceneLastFocus = null
+      function openSceneModal() {
+        const m = document.getElementById('sceneModal')
+        if (!m) return
+        _sceneLastFocus = document.activeElement
+        _sceneShowGrid()
+        const inp = document.getElementById('sceneInput'); if (inp) inp.value = ''
+        _sceneRenderGrid('')
+        m.hidden = false
+        document.documentElement.style.overflow = 'hidden'
+        setTimeout(() => { const i = document.getElementById('sceneInput'); if (i) i.focus() }, 50)
+      }
+      function closeSceneModal() {
+        const m = document.getElementById('sceneModal')
+        if (!m || m.hidden) return
+        m.hidden = true
+        if (_anyModalOpen() === false) document.documentElement.style.overflow = ''
+        if (_sceneLastFocus && _sceneLastFocus.focus) _sceneLastFocus.focus()
+      }
+      window.openSceneModal = openSceneModal
+      window.closeSceneModal = closeSceneModal
+      window.openSceneDetail = openSceneDetail
+      window._sceneFilter = _sceneFilter
+      window._sceneShowGrid = _sceneShowGrid
+      window._scenePinAll = _scenePinAll
 
       /* ---------- Phase 3: Reference modal (CTCSS, repeater, phonetics, Q-codes) ---------- */
       const CTCSS_TONES = [
@@ -6585,11 +7327,12 @@
           { group: 'Actions', icon: '🌍', label: 'Run onboarding tour', run: () => startTour() },
           { group: 'Actions', icon: '📡', label: 'Open US repeater finder', run: () => openRepModal() },
           { group: 'Actions', icon: '⚖', label: 'Open compare drawer', meta: 'x', run: () => openCompare() },
+          { group: 'Actions', icon: '🧭', label: 'Open trip / scene planner', run: () => openSceneModal() },
           { group: 'Actions', icon: '🔊', label: 'Open tone generator', meta: 't', run: openToneModal },
           { group: 'Actions', icon: '?',  label: 'Show keyboard shortcuts', meta: '?', run: openHelpModal },
           { group: 'Actions', icon: '🖨', label: 'Print current view', meta: 'p', run: () => window.print() },
           { group: 'Actions', icon: '⬇', label: 'Export settings (.json)', run: exportSettings },
-          { group: 'Actions', icon: '🌓', label: 'Toggle theme (light / dark / auto)', run: () => { const t=document.getElementById('themeToggle'); if (t) t.click() } },
+          { group: 'Actions', icon: '🌓', label: 'Cycle theme (auto / light / dark / hc / amber / green)', run: () => { if (typeof cycleTheme === 'function') cycleTheme() } },
         ]
         cmds.push({ group: 'ITU Region', icon: '🌐', label: 'Set ITU Region 1 — Europe / Africa / Mid-East', run: () => setRegion(1) })
         cmds.push({ group: 'ITU Region', icon: '🌐', label: 'Set ITU Region 2 — Americas', run: () => setRegion(2) })
@@ -7064,8 +7807,7 @@
       const TOUR_STEPS = [
         { sel: '#bandSearch',     title: 'Search anything',       body: 'Find bands by name, frequency, or use case. Try "FT8", "police", or "162.55".' },
         { sel: '#paletteBtn',     title: 'Command palette',       body: 'Press Ctrl/⌘+K anywhere to fuzzy-jump to bands, run actions, switch filters or ITU regions.' },
-        { sel: '#toolsBtn',       title: 'Tools menu',            body: 'RF calculator, reference (CTCSS / Q-codes / space wx), tone generator, logbook with ADIF export, US repeater finder, compare drawer, print, and the tour all live here.' },
-        { sel: '#themeToggle',    title: 'Themes',                body: 'Cycle through Auto / Light / Dark / High contrast / Amber CRT / Green CRT.' },
+        { sel: '#toolsBtn',       title: 'Tools menu',            body: 'RF calculator, reference (CTCSS / Q-codes / space wx), tone generator, logbook with ADIF export, US repeater finder, compare drawer, trip / scene planner, settings (incl. theme picker), print, and the tour all live here.' },
         { sel: '#helpBtn',        title: 'You\u2019re ready',     body: 'Press ? anytime for the full keyboard shortcut list. Have fun on the air!' },
       ]
       let _tourIdx = 0
@@ -7199,6 +7941,64 @@
       function _persistPinned() {
         try { localStorage.setItem('rfguide-pinned', JSON.stringify(pinnedBands)) } catch (e) {}
       }
+
+      /* ----- Compare presets (named saved sets of pinned bands) ----- */
+      let _comparePresets = (function () {
+        try { return JSON.parse(localStorage.getItem('rfguide-cmp-presets')) || {} }
+        catch (e) { return {} }
+      })()
+      let _activePresetName = ''
+      function _persistComparePresets() {
+        try { localStorage.setItem('rfguide-cmp-presets', JSON.stringify(_comparePresets)) } catch (e) {}
+      }
+      function _renderComparePresetSelect() {
+        const sel = document.getElementById('comparePresetSelect')
+        if (!sel) return
+        const names = Object.keys(_comparePresets).sort()
+        sel.innerHTML = '<option value="">— load saved set —</option>' +
+          names.map(n => '<option value="' + escHtml(n) + '"' + (n === _activePresetName ? ' selected' : '') + '>' + escHtml(n) + ' (' + _comparePresets[n].length + ')</option>').join('')
+        const del = document.getElementById('comparePresetDel')
+        if (del) del.hidden = !_activePresetName
+      }
+      function saveComparePreset() {
+        if (!pinnedBands.length) {
+          showToast('Nothing to save', 'Pin at least one band first.', 'warn', 1800)
+          return
+        }
+        const suggested = _activePresetName || ('preset ' + (Object.keys(_comparePresets).length + 1))
+        const name = (window.prompt('Preset name?', suggested) || '').trim()
+        if (!name) return
+        _comparePresets[name] = pinnedBands.slice()
+        _persistComparePresets()
+        _activePresetName = name
+        _renderComparePresetSelect()
+        showToast('Preset saved', '"' + name + '" · ' + pinnedBands.length + ' band(s)', 'success', 1800)
+      }
+      function loadComparePreset(name) {
+        if (!name || !_comparePresets[name]) { _activePresetName = ''; _renderComparePresetSelect(); return }
+        const ids = _comparePresets[name].filter(id => bands.some(b => b.id === id)).slice(0, COMPARE_MAX)
+        pinnedBands = ids
+        _persistPinned()
+        _updateCompareFab()
+        _renderCompare()
+        renderList()
+        _activePresetName = name
+        _renderComparePresetSelect()
+        showToast('Preset loaded', '"' + name + '" · ' + ids.length + ' band(s)', 'info', 1800)
+      }
+      function deleteComparePreset() {
+        if (!_activePresetName) return
+        if (!window.confirm('Delete preset "' + _activePresetName + '"?')) return
+        delete _comparePresets[_activePresetName]
+        _persistComparePresets()
+        const name = _activePresetName
+        _activePresetName = ''
+        _renderComparePresetSelect()
+        showToast('Preset deleted', '"' + name + '"', 'info', 1500)
+      }
+      window.saveComparePreset = saveComparePreset
+      window.loadComparePreset = loadComparePreset
+      window.deleteComparePreset = deleteComparePreset
       function isPinned(id) { return pinnedBands.indexOf(id) !== -1 }
       function togglePin(id, btn) {
         if (isPinned(id)) {
@@ -7241,6 +8041,7 @@
         if (!d) return
         _cmpLastFocus = document.activeElement
         _renderCompare()
+        _renderComparePresetSelect()
         d.classList.add('open')
         d.setAttribute('aria-hidden', 'false')
         const x = d.querySelector('.head button[aria-label="Close"]'); if (x) x.focus()
@@ -7815,6 +8616,11 @@
           display: 'standalone',
           background_color: '#0a0a0a',
           theme_color: '#0a0a0a',
+          share_target: {
+            action: '.',
+            method: 'GET',
+            params: { title: 'share_title', text: 'share_text', url: 'share_url' },
+          },
           icons: [
             // 1x1 transparent PNG fallback so the manifest is technically valid even without a real icon
             { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII=', sizes: '192x192', type: 'image/png' },
@@ -9739,37 +10545,32 @@
       window.closeModeModal = closeModeModal
       window.openModeForBand = openModeForBand
 
-      /* ---------- Theme toggle ---------- */
+      /* ---------- Theme picker (now lives in Settings drawer) ---------- */
       ;(function () {
         const root = document.documentElement
-        const btn = document.getElementById('themeToggle')
-        const icon = document.getElementById('themeToggleIcon')
-        const label = document.getElementById('themeToggleLabel')
         const order = ['auto', 'light', 'dark', 'hc', 'amber', 'green']
-        const icons = { auto: '🌗', light: '☀️', dark: '🌙', hc: '◼', amber: '🟧', green: '🟩' }
         const labels = { auto: 'Auto', light: 'Light', dark: 'Dark', hc: 'High contrast', amber: 'Amber CRT', green: 'Green CRT' }
         let stored = 'auto'
-        try {
-          stored = localStorage.getItem('rfguide-theme') || 'auto'
-        } catch (e) {}
+        try { stored = localStorage.getItem('rfguide-theme') || 'auto' } catch (e) {}
         function apply(mode) {
+          if (!order.includes(mode)) mode = 'auto'
           if (mode === 'auto') root.removeAttribute('data-theme')
           else root.setAttribute('data-theme', mode)
-          icon.textContent = icons[mode]
-          label.textContent = labels[mode]
-          btn.setAttribute(
-            'aria-label',
-            'Theme: ' + labels[mode] + ' (click to change)',
-          )
-          try {
-            localStorage.setItem('rfguide-theme', mode)
-          } catch (e) {}
+          const sel = document.getElementById('settingThemeSelect')
+          if (sel && sel.value !== mode) sel.value = mode
+          try { localStorage.setItem('rfguide-theme', mode) } catch (e) {}
+        }
+        function cycle() {
+          const cur = root.getAttribute('data-theme') || 'auto'
+          apply(order[(order.indexOf(cur) + 1) % order.length])
+          if (typeof showToast === 'function') {
+            const next = root.getAttribute('data-theme') || 'auto'
+            showToast('Theme: ' + labels[next], '', 'info', 1200)
+          }
         }
         apply(stored)
-        btn.addEventListener('click', () => {
-          let cur = root.getAttribute('data-theme') || 'auto'
-          apply(order[(order.indexOf(cur) + 1) % order.length])
-        })
+        window.setTheme = apply
+        window.cycleTheme = cycle
       })()
 
       /* ---------- Display settings (color-blind friendly) ---------- */
@@ -9806,6 +10607,8 @@
         if (!d) return
         d.setAttribute('data-open', '1')
         d.setAttribute('aria-hidden', 'false')
+        const sel = document.getElementById('settingThemeSelect')
+        if (sel) sel.value = document.documentElement.getAttribute('data-theme') || 'auto'
         const cb = document.getElementById('settingCatColors')
         if (cb) cb.focus()
       }
@@ -9814,8 +10617,8 @@
         if (!d) return
         d.removeAttribute('data-open')
         d.setAttribute('aria-hidden', 'true')
-        const fab = document.getElementById('settingsFab')
-        if (fab) fab.focus()
+        const tb = document.getElementById('toolsBtn')
+        if (tb) tb.focus()
       }
       window.setCategoryColors = setCategoryColors
       window.setCategoryFilters = setCategoryFilters
@@ -9841,9 +10644,7 @@
         document.addEventListener('pointerdown', (e) => {
           const d = document.getElementById('settingsDrawer')
           if (!d || d.getAttribute('data-open') !== '1') return
-          const fab = document.getElementById('settingsFab')
           if (d.contains(e.target)) return
-          if (fab && fab.contains(e.target)) return
           closeSettings()
         })
       })()
@@ -10132,6 +10933,135 @@
       renderList()
       decorateAcronyms(document.body)
       window.addEventListener('resize', buildSpectrum)
+
+      /* ---------- Share-target / shared-frequency handler ----------
+         Accepts ?freq=146.52MHz, ?share_text=..., ?share_title=..., ?share_url=...
+         Extracts the first frequency-like number, finds the band whose range covers it,
+         scrolls/expands that band, and shows a toast. */
+      ;(function _handleSharedFreq() {
+        try {
+          const params = new URLSearchParams(location.search)
+          const candidates = [params.get('freq'), params.get('f'), params.get('share_text'), params.get('share_title'), params.get('share_url'), params.get('text')]
+            .filter(Boolean)
+          if (!candidates.length) return
+          const blob = candidates.join(' ')
+          // Match number + optional unit (Hz / kHz / MHz / GHz). Allow . , _ thousands.
+          const re = /(\d{1,4}(?:[.,]\d+)?)\s*(ghz|mhz|khz|hz)?/i
+          const m = blob.match(re)
+          if (!m) return
+          const num = parseFloat(m[1].replace(',', '.'))
+          if (!isFinite(num) || num <= 0) return
+          const unit = (m[2] || '').toLowerCase()
+          let hz = num
+          if (unit === 'ghz') hz = num * 1e9
+          else if (unit === 'mhz' || !unit && num >= 1 && num < 10000) hz = num * 1e6 // bare number defaults to MHz
+          else if (unit === 'khz') hz = num * 1e3
+          // Find band whose [flo..fhi] (Hz) covers the freq
+          const band = bands.find(b => typeof b.flo === 'number' && typeof b.fhi === 'number' && hz >= b.flo && hz <= b.fhi)
+          if (!band) {
+            if (typeof showToast === 'function') showToast('No matching band', _fmtFreqAuto(hz) + ' is outside the listed allocations.', 'warn', 3500)
+            return
+          }
+          // Strip share params from URL so refresh doesn't re-trigger
+          try {
+            const clean = new URL(location.href)
+            ;['freq', 'f', 'share_text', 'share_title', 'share_url', 'text'].forEach(k => clean.searchParams.delete(k))
+            history.replaceState(null, '', clean.pathname + (clean.search ? clean.search : '') + clean.hash)
+          } catch (e) {}
+          activeBand = band.id
+          renderList()
+          requestAnimationFrame(() => {
+            const el = document.getElementById('row-' + band.id)
+            if (el) {
+              el.scrollIntoView({ block: 'center', behavior: 'smooth' })
+              el.classList.add('pulse')
+              setTimeout(() => el.classList.remove('pulse'), 3000)
+            }
+          })
+          if (typeof showToast === 'function') showToast('Jumped to shared frequency', _fmtFreqAuto(hz) + ' → ' + band.name, 'success', 3000)
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.warn('share-target handler error', e)
+        }
+      })()
+
+      /* ---------- Dev self-tests (?dev=1 in URL) ---------- */
+      ;(function _devTests() {
+        try {
+          if (!/[?&]dev=1\b/.test(location.search)) return
+          const C = 299792458
+          const tests = []
+          const approx = (a, b, tol) => Math.abs(a - b) <= (tol || 1e-6)
+          const t = (name, ok, got, want) => tests.push({ name, ok: !!ok, got, want })
+
+          // Wavelength: c / f
+          t('λ @ 100 MHz ≈ 2.998 m', approx(C / 100e6, 2.998, 0.001), C / 100e6, 2.998)
+          t('λ @ 1 GHz ≈ 0.2998 m', approx(C / 1e9, 0.2998, 0.001), C / 1e9, 0.2998)
+          // ½λ dipole = (468 / f_MHz) ft for 14 MHz ≈ 33.43 ft
+          const half_dip_14 = 468 / 14
+          t('½λ dipole @ 14 MHz ≈ 33.43 ft', approx(half_dip_14, 33.43, 0.05), half_dip_14, 33.43)
+          // Quarter wave @ 146 MHz ≈ 0.513 m
+          t('¼λ @ 146 MHz ≈ 0.513 m', approx(C / 146e6 / 4, 0.5133, 0.005), C / 146e6 / 4, 0.5133)
+
+          // SWR ↔ return loss: RL_dB = -20·log10|(SWR-1)/(SWR+1)|
+          const rl = (swr) => -20 * Math.log10(Math.abs((swr - 1) / (swr + 1)))
+          t('SWR 1.0 → RL = ∞', !isFinite(rl(1.0)), rl(1.0), Infinity)
+          t('SWR 1.5 → RL ≈ 13.98 dB', approx(rl(1.5), 13.98, 0.05), rl(1.5), 13.98)
+          t('SWR 2.0 → RL ≈ 9.54 dB', approx(rl(2.0), 9.54, 0.05), rl(2.0), 9.54)
+          t('SWR 3.0 → RL ≈ 6.02 dB', approx(rl(3.0), 6.02, 0.05), rl(3.0), 6.02)
+
+          // Reflected power %: |Γ|² × 100,  Γ = (SWR-1)/(SWR+1)
+          const refl = (swr) => Math.pow((swr - 1) / (swr + 1), 2) * 100
+          t('SWR 2.0 → 11.1% reflected', approx(refl(2.0), 11.11, 0.05), refl(2.0), 11.11)
+
+          // Free-space path loss: FSPL(dB) = 20·log10(d_km) + 20·log10(f_MHz) + 32.45
+          const fspl = (km, mhz) => 20 * Math.log10(km) + 20 * Math.log10(mhz) + 32.45
+          t('FSPL 1 km @ 1 MHz ≈ 32.45 dB', approx(fspl(1, 1), 32.45, 0.05), fspl(1, 1), 32.45)
+          t('FSPL 10 km @ 146 MHz ≈ 95.78 dB', approx(fspl(10, 146), 95.78, 0.1), fspl(10, 146), 95.78)
+          t('FSPL 36000 km @ 1.5 GHz ≈ 187.05 dB', approx(fspl(36000, 1500), 187.06, 0.2), fspl(36000, 1500), 187.06)
+
+          // Radio horizon: d(km) ≈ 4.12·(√h_tx + √h_rx), h in m (4/3 Earth)
+          const rh = (h1, h2) => 4.12 * (Math.sqrt(h1) + Math.sqrt(h2))
+          t('horizon 10 m + 2 m ≈ 18.86 km', approx(rh(10, 2), 18.86, 0.05), rh(10, 2), 18.86)
+          t('horizon 100 m + 2 m ≈ 47.03 km', approx(rh(100, 2), 47.03, 0.1), rh(100, 2), 47.03)
+
+          // dBm → mW: P_mW = 10^(dBm/10)
+          const dbm2mw = (dbm) => Math.pow(10, dbm / 10)
+          t('0 dBm = 1 mW', approx(dbm2mw(0), 1, 1e-9), dbm2mw(0), 1)
+          t('30 dBm = 1000 mW', approx(dbm2mw(30), 1000, 1e-6), dbm2mw(30), 1000)
+          t('-73 dBm (S9) ≈ 5.012e-8 mW', approx(dbm2mw(-73), 5.012e-8, 1e-10), dbm2mw(-73), 5.012e-8)
+
+          // dBm → µV across 50 Ω: V = √(P_W × R), µV = V × 1e6
+          const dbm2uv = (dbm) => Math.sqrt(Math.pow(10, (dbm - 30) / 10) * 50) * 1e6
+          t('-73 dBm (S9, 50Ω) ≈ 50.24 µV', approx(dbm2uv(-73), 50.24, 0.5), dbm2uv(-73), 50.24)
+          t('0 dBm (50Ω) ≈ 223.6 mV → 223607 µV', approx(dbm2uv(0), 223607, 5), dbm2uv(0), 223607)
+
+          const passed = tests.filter(x => x.ok).length
+          const failed = tests.filter(x => !x.ok)
+          // eslint-disable-next-line no-console
+          console.group('%cRF Calc self-tests', 'background:#111;color:#0f0;padding:2px 6px;border-radius:3px')
+          tests.forEach(x => {
+            const sym = x.ok ? '✅' : '❌'
+            // eslint-disable-next-line no-console
+            console.log(sym + ' ' + x.name, x.ok ? '' : '  got=' + x.got + '  want=' + x.want)
+          })
+          // eslint-disable-next-line no-console
+          console.log(`Result: ${passed} / ${tests.length} passed`)
+          // eslint-disable-next-line no-console
+          console.groupEnd()
+          if (typeof showToast === 'function') {
+            const kind = failed.length ? 'error' : 'success'
+            showToast(
+              failed.length ? '❌ ' + failed.length + ' test(s) failed' : '✅ Self-tests passed',
+              passed + ' / ' + tests.length + ' formulas verified · see console',
+              kind, 4500,
+            )
+          }
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.error('Self-tests crashed', e)
+        }
+      })()
     </script>
     </div>
   </body>
