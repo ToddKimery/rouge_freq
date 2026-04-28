@@ -1346,6 +1346,592 @@
           list-style: none;
         }
       }
+
+      /* ========== Phase 4: toasts, palette, propagation, region, tones ========== */
+
+      /* ----- Toasts ----- */
+      .toast-stack {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+        max-width: calc(100vw - 32px);
+      }
+      .toast {
+        pointer-events: auto;
+        background: var(--color-background-primary);
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 10px 12px 10px 14px;
+        min-width: 220px;
+        max-width: 360px;
+        font-size: 13px;
+        line-height: 1.45;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        animation: toastIn 0.18s ease-out;
+        border-left: 3px solid var(--color-accent);
+      }
+      .toast.success { border-left-color: var(--color-success); }
+      .toast.warn    { border-left-color: var(--color-warning); }
+      .toast.error   { border-left-color: var(--color-danger); }
+      .toast .icon {
+        font-size: 14px;
+        line-height: 1.4;
+        flex-shrink: 0;
+      }
+      .toast .body { flex: 1; }
+      .toast .title {
+        font-weight: 600;
+        margin-bottom: 1px;
+      }
+      .toast .desc {
+        color: var(--color-text-secondary);
+        font-size: 12px;
+      }
+      .toast .x {
+        appearance: none;
+        background: transparent;
+        border: none;
+        color: var(--color-text-tertiary);
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        padding: 0 2px;
+      }
+      .toast .x:hover { color: var(--color-text-primary); }
+      .toast.leaving { animation: toastOut 0.18s ease-in forwards; }
+      @keyframes toastIn {
+        from { opacity: 0; transform: translateY(8px) scale(0.98); }
+        to   { opacity: 1; transform: translateY(0)    scale(1); }
+      }
+      @keyframes toastOut {
+        from { opacity: 1; transform: translateY(0); }
+        to   { opacity: 0; transform: translateY(8px); }
+      }
+
+      /* ----- Command palette ----- */
+      .palette-backdrop {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 1500;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 12vh 16px 16px;
+        -webkit-backdrop-filter: blur(2px);
+        backdrop-filter: blur(2px);
+        animation: modalFade 0.12s ease-out;
+      }
+      .palette-backdrop[hidden] { display: none; }
+      .palette-card {
+        width: 100%;
+        max-width: 580px;
+        background: var(--color-background-primary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        max-height: 70vh;
+      }
+      .palette-card input {
+        font: inherit;
+        font-size: 15px;
+        padding: 14px 16px;
+        border: none;
+        border-bottom: 1px solid var(--color-border-tertiary);
+        background: transparent;
+        color: var(--color-text-primary);
+        outline: none;
+      }
+      .palette-card input::placeholder { color: var(--color-text-tertiary); }
+      .palette-list {
+        overflow-y: auto;
+        max-height: 60vh;
+        padding: 6px;
+      }
+      .palette-empty {
+        padding: 28px 16px;
+        text-align: center;
+        color: var(--color-text-tertiary);
+        font-size: 13px;
+      }
+      .palette-group {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-text-tertiary);
+        padding: 8px 10px 4px;
+      }
+      .palette-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--color-text-primary);
+      }
+      .palette-item .pi-icon {
+        width: 22px;
+        text-align: center;
+        opacity: 0.8;
+      }
+      .palette-item .pi-meta {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--color-text-tertiary);
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .palette-item.on,
+      .palette-item:hover {
+        background: var(--color-background-secondary);
+      }
+      .palette-foot {
+        border-top: 1px solid var(--color-border-tertiary);
+        padding: 6px 12px;
+        font-size: 11px;
+        color: var(--color-text-tertiary);
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .palette-foot kbd { font-size: 10px; padding: 1px 5px; }
+
+      /* ----- Propagation badge ----- */
+      .prop-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-weight: 500;
+        line-height: 1.4;
+        white-space: nowrap;
+      }
+      .prop-good {
+        background: hsl(142 70% 36% / 0.12);
+        color: hsl(142 65% 30%);
+        border: 1px solid hsl(142 70% 36% / 0.4);
+      }
+      .prop-fair {
+        background: hsl(38 92% 45% / 0.12);
+        color: hsl(38 90% 35%);
+        border: 1px solid hsl(38 92% 45% / 0.4);
+      }
+      .prop-poor {
+        background: hsl(0 0% 50% / 0.10);
+        color: var(--color-text-tertiary);
+        border: 1px solid var(--color-border-tertiary);
+      }
+      @media (prefers-color-scheme: dark) {
+        .prop-good { color: hsl(142 65% 65%); }
+        .prop-fair { color: hsl(38 90% 65%); }
+      }
+      html[data-theme='dark'] .prop-good { color: hsl(142 65% 65%); }
+      html[data-theme='dark'] .prop-fair { color: hsl(38 90% 65%); }
+
+      /* ----- Region selector pill ----- */
+      .region-pill {
+        appearance: none;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 0 10px;
+        height: 32px;
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-md);
+        background: transparent;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .region-pill:hover {
+        border-color: var(--color-border-primary);
+        background: var(--color-background-secondary);
+      }
+      .region-pill .rp-num {
+        color: var(--color-text-primary);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ----- Tone generator modal extras ----- */
+      .tone-pad {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+        gap: 6px;
+      }
+      .tone-pad button {
+        font: inherit;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        padding: 6px 4px;
+        border: 1px solid var(--color-border-tertiary);
+        background: var(--color-background-secondary);
+        color: var(--color-text-primary);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-variant-numeric: tabular-nums;
+      }
+      .tone-pad button:hover {
+        border-color: var(--color-accent);
+      }
+      .tone-pad button.playing {
+        background: var(--color-accent);
+        color: var(--color-accent-fg);
+        border-color: var(--color-accent);
+      }
+      .tone-now {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        padding: 8px 10px;
+        border: 1px solid var(--color-border-tertiary);
+        border-radius: var(--radius-md);
+        background: var(--color-background-secondary);
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .tone-now .stop {
+        font: inherit;
+        font-size: 11px;
+        padding: 4px 10px;
+        border: 1px solid var(--color-danger);
+        background: transparent;
+        color: var(--color-danger);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+      }
+      .tone-now .stop:hover {
+        background: var(--color-danger);
+        color: #fff;
+      }
+
+      /* Print: hide new chrome */
+      @media print {
+        .toast-stack,
+        .palette-backdrop,
+        .region-pill,
+        .prop-badge { display: none !important; }
+      }
+
+      /* ========== Phase 5: logbook, freq jump, space wx, tour, progress ========== */
+
+      /* Logbook */
+      .log-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+      }
+      .log-table th, .log-table td {
+        text-align: left;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--color-border-tertiary);
+        vertical-align: top;
+      }
+      .log-table th {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--color-text-tertiary);
+        font-weight: 500;
+        background: var(--color-background-secondary);
+        position: sticky;
+        top: 0;
+      }
+      .log-table tr:hover td { background: var(--color-background-secondary); }
+      .log-table .num { text-align: right; }
+      .log-table .del {
+        appearance: none;
+        background: transparent;
+        border: none;
+        color: var(--color-text-tertiary);
+        cursor: pointer;
+        font-size: 14px;
+        padding: 0 4px;
+      }
+      .log-table .del:hover { color: var(--color-danger); }
+      .log-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+        padding: 12px;
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border-tertiary);
+        border-radius: var(--radius-md);
+        margin-bottom: 12px;
+      }
+      .log-form label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--color-text-tertiary);
+        display: block;
+        margin-bottom: 3px;
+      }
+      .log-form input, .log-form select {
+        width: 100%;
+        font: inherit;
+        font-size: 13px;
+        padding: 6px 8px;
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-sm);
+        background: var(--color-background-primary);
+        color: var(--color-text-primary);
+        height: 32px;
+      }
+      .log-form input:focus, .log-form select:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 3px var(--color-ring);
+      }
+      .log-form .full { grid-column: 1 / -1; }
+      .log-form .actions {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .log-empty {
+        text-align: center;
+        padding: 28px 16px;
+        color: var(--color-text-tertiary);
+        font-size: 13px;
+        border: 1px dashed var(--color-border-secondary);
+        border-radius: var(--radius-md);
+      }
+      .log-stats {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: var(--color-text-secondary);
+        margin-bottom: 10px;
+      }
+      .log-stats b {
+        color: var(--color-text-primary);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Frequency keypad */
+      .freq-jump {
+        display: flex;
+        gap: 6px;
+        margin: 4px 0 14px;
+        align-items: center;
+      }
+      .freq-jump input {
+        flex: 1;
+        font: inherit;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        padding: 8px 12px;
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-md);
+        background: var(--color-background-primary);
+        color: var(--color-text-primary);
+        height: 38px;
+        font-variant-numeric: tabular-nums;
+      }
+      .freq-jump input:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 3px var(--color-ring);
+      }
+      .freq-jump button {
+        font: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 14px;
+        height: 38px;
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        background: var(--color-text-primary);
+        color: var(--color-background-primary);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .freq-jump button:hover { opacity: 0.9; }
+      .freq-jump .hint {
+        font-size: 11px;
+        color: var(--color-text-tertiary);
+        white-space: nowrap;
+      }
+      @media (max-width: 540px) {
+        .freq-jump .hint { display: none; }
+      }
+
+      /* Space weather */
+      .swx-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+      }
+      .swx-card {
+        padding: 10px 12px;
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border-tertiary);
+        border-radius: var(--radius-md);
+      }
+      .swx-card .v {
+        font-family: var(--font-mono);
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--color-text-primary);
+        font-variant-numeric: tabular-nums;
+        margin-top: 2px;
+      }
+      .swx-card .l {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--color-text-tertiary);
+      }
+      .swx-card .h {
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        margin-top: 4px;
+      }
+      .swx-status { color: var(--color-text-secondary); font-size: 12px; margin: 6px 0; }
+      .swx-status.err { color: var(--color-danger); }
+
+      /* Onboarding tour */
+      .tour-backdrop {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1900;
+        animation: modalFade 0.2s ease-out;
+      }
+      .tour-backdrop[hidden] { display: none; }
+      .tour-spot {
+        position: fixed;
+        z-index: 1901;
+        border: 2px solid var(--color-accent);
+        border-radius: var(--radius-md);
+        box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+        pointer-events: none;
+        transition: all 0.25s ease;
+      }
+      .tour-pop {
+        position: fixed;
+        z-index: 1902;
+        max-width: 320px;
+        background: var(--color-background-primary);
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border-secondary);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 14px 16px 12px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .tour-pop .tt {
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 14px;
+      }
+      .tour-pop .td { color: var(--color-text-secondary); }
+      .tour-pop .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        gap: 8px;
+      }
+      .tour-pop .nav .step {
+        font-size: 11px;
+        color: var(--color-text-tertiary);
+        font-variant-numeric: tabular-nums;
+      }
+      .tour-pop .nav .btns { display: flex; gap: 6px; }
+      .tour-pop button {
+        font: inherit;
+        font-size: 12px;
+        padding: 5px 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--color-border-secondary);
+        background: transparent;
+        color: var(--color-text-primary);
+        cursor: pointer;
+      }
+      .tour-pop button.primary {
+        background: var(--color-text-primary);
+        color: var(--color-background-primary);
+        border-color: var(--color-text-primary);
+      }
+      .tour-pop button:hover { opacity: 0.9; }
+
+      /* Worked-bands progress */
+      .worked-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border-tertiary);
+        border-radius: var(--radius-md);
+        margin-bottom: 12px;
+        font-size: 12px;
+      }
+      .worked-bar .meter {
+        flex: 1;
+        height: 8px;
+        background: var(--color-background-tertiary);
+        border-radius: 999px;
+        overflow: hidden;
+        min-width: 80px;
+      }
+      .worked-bar .meter > div {
+        height: 100%;
+        background: linear-gradient(90deg, var(--color-success), var(--color-accent));
+        transition: width 0.4s ease;
+      }
+      .worked-bar .nums {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+        color: var(--color-text-primary);
+        font-weight: 600;
+      }
+      .worked-bar .pct {
+        color: var(--color-text-tertiary);
+        font-size: 11px;
+      }
+      .has-worked .band-name::after {
+        content: ' ✅';
+        font-size: 10px;
+        opacity: 0.8;
+      }
+      /* combine notes + worked indicators */
+      .has-notes.has-worked .band-name::after {
+        content: ' 📝✅';
+      }
+
+      @media print {
+        .freq-jump,
+        .tour-backdrop,
+        .tour-spot,
+        .tour-pop,
+        .worked-bar { display: none !important; }
+      }
     </style>
   </head>
   <body>
@@ -1454,6 +2040,49 @@
           >
             <span aria-hidden="true">📚</span>
             <span>Ref</span>
+          </button>
+          <button
+            id="toneBtn"
+            class="theme-toggle"
+            type="button"
+            aria-label="Open tone generator"
+            title="Tone generator: CTCSS, CW practice, dial tone (t)"
+            onclick="openToneModal()"
+          >
+            <span aria-hidden="true">🔊</span>
+            <span>Tones</span>
+          </button>
+          <button
+            id="logBtn"
+            class="theme-toggle"
+            type="button"
+            aria-label="Open logbook"
+            title="QSO / SWL logbook with ADIF export (l)"
+            onclick="openLogModal()"
+          >
+            <span aria-hidden="true">📒</span>
+            <span>Log</span>
+          </button>
+          <button
+            id="paletteBtn"
+            class="theme-toggle"
+            type="button"
+            aria-label="Open command palette"
+            title="Command palette (Ctrl/⌘+K)"
+            onclick="openPalette()"
+          >
+            <span aria-hidden="true">⌘</span>
+            <span>K</span>
+          </button>
+          <button
+            id="regionBtn"
+            class="region-pill"
+            type="button"
+            aria-label="Switch ITU region"
+            title="Switch ITU region (affects HF allocations)"
+            onclick="cycleRegion()"
+          >
+            <span>ITU R</span><span class="rp-num" id="regionNum">2</span>
           </button>
           <button
             id="randomBtn"
@@ -1579,6 +2208,28 @@
           color: var(--color-text-tertiary);
         "
       ></div>
+
+      <div class="freq-jump" data-no-acro>
+        <input
+          id="freqJumpInput"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Tune to frequency: 14.074 MHz, 162.55, 9750 kHz, 868M, 1.09GHz…"
+          aria-label="Jump to frequency"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();jumpToFreq(this.value)}"
+        />
+        <button type="button" onclick="jumpToFreq(document.getElementById('freqJumpInput').value)">Tune ↗</button>
+        <span class="hint">⏎ to tune</span>
+      </div>
+
+      <div class="worked-bar" id="workedBar" data-no-acro hidden>
+        <span aria-hidden="true">✅</span>
+        <span class="nums" id="workedNums">0 / 0</span>
+        <div class="meter"><div id="workedMeter" style="width:0%"></div></div>
+        <span class="pct" id="workedPct">0%</span>
+      </div>
 
       <div class="search-bar" role="search" data-no-acro>
         <div class="search-field">
@@ -2063,6 +2714,194 @@
     </div>
 
     <div
+      id="paletteBackdrop"
+      class="palette-backdrop"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-label="Command palette"
+      onclick="if (event.target === this) closePalette()"
+    >
+      <div class="palette-card" role="document">
+        <input
+          id="paletteInput"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Type a command or band name…  (↑↓ to navigate, Enter to run, Esc to close)"
+          oninput="_paletteFilter()"
+          onkeydown="_paletteKey(event)"
+        />
+        <div class="palette-list" id="paletteList" role="listbox"></div>
+        <div class="palette-foot">
+          <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+          <span><kbd>Enter</kbd> run</span>
+          <span><kbd>Esc</kbd> close</span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="toneModal"
+      class="modal-backdrop"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="toneModalTitle"
+      onclick="if (event.target === this) closeToneModal()"
+    >
+      <div class="modal-card" role="document">
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Close tone generator"
+          onclick="closeToneModal()"
+        >
+          ×
+        </button>
+        <div class="modal-head">
+          <h2 id="toneModalTitle">🔊 Tone generator</h2>
+          <span class="freq">Web Audio · headphones recommended</span>
+        </div>
+
+        <div class="modal-section">
+          <h3>CTCSS / sub-audible tones (Hz)</h3>
+          <p>Click any tone to play it through your default audio output. Useful for setting your radio's encode/decode tone or testing a deviation meter.</p>
+          <div class="tone-pad" id="toneCtcssPad"></div>
+        </div>
+
+        <div class="modal-section">
+          <h3>Carrier / dial tone (Hz)</h3>
+          <div class="calc-row">
+            <label for="toneCarrierHz">Frequency</label>
+            <input id="toneCarrierHz" type="number" min="20" max="20000" step="1" value="700" />
+            <button type="button" class="ask-btn" onclick="playCarrierFromInput()" style="margin-top:0;height:34px">▶ Play</button>
+          </div>
+          <p style="font-size:12px;color:var(--color-text-tertiary);margin-top:6px">CW practice sidetone is typically 600–800 Hz. 1 kHz is a common audio reference.</p>
+        </div>
+
+        <div class="modal-section">
+          <h3>CW practice (Morse)</h3>
+          <div class="calc-row">
+            <label for="toneCwText">Text</label>
+            <input id="toneCwText" type="text" maxlength="80" value="CQ CQ DE NEW SDR" />
+          </div>
+          <div class="calc-row">
+            <label for="toneCwWpm">Speed (WPM)</label>
+            <input id="toneCwWpm" type="number" min="5" max="40" step="1" value="18" style="max-width:90px;flex:0 0 90px" />
+            <label for="toneCwHz" style="min-width:auto">Pitch (Hz)</label>
+            <input id="toneCwHz" type="number" min="300" max="1500" step="10" value="700" style="max-width:100px;flex:0 0 100px" />
+            <button type="button" class="ask-btn" onclick="playCwFromInput()" style="margin-top:0;height:34px">▶ Send</button>
+          </div>
+        </div>
+
+        <div class="tone-now" id="toneNow" hidden>
+          <span id="toneNowText">—</span>
+          <button type="button" class="stop" onclick="stopAllTones()">■ Stop</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+    <div
+      id="logModal"
+      class="modal-backdrop"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="logModalTitle"
+      onclick="if (event.target === this) closeLogModal()"
+    >
+      <div class="modal-card" role="document" style="max-width:880px">
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Close logbook"
+          onclick="closeLogModal()"
+        >
+          ×
+        </button>
+        <div class="modal-head">
+          <h2 id="logModalTitle">📒 Logbook</h2>
+          <span class="freq" id="logCount">0 entries</span>
+        </div>
+
+        <div class="modal-section">
+          <h3>New entry</h3>
+          <div class="log-form">
+            <div>
+              <label for="logDate">Date (UTC)</label>
+              <input id="logDate" type="date" />
+            </div>
+            <div>
+              <label for="logTime">Time (UTC)</label>
+              <input id="logTime" type="time" step="1" />
+            </div>
+            <div>
+              <label for="logCall">Call / station</label>
+              <input id="logCall" type="text" placeholder="W1AW or BBC R4" />
+            </div>
+            <div>
+              <label for="logFreq">Frequency</label>
+              <input id="logFreq" type="text" placeholder="14.074 MHz" />
+            </div>
+            <div>
+              <label for="logMode">Mode</label>
+              <input id="logMode" type="text" placeholder="FT8, SSB, AM…" />
+            </div>
+            <div>
+              <label for="logRst">RST / signal</label>
+              <input id="logRst" type="text" placeholder="599 or S7" />
+            </div>
+            <div>
+              <label for="logBand">Band</label>
+              <select id="logBand"><option value="">— pick a band —</option></select>
+            </div>
+            <div class="full">
+              <label for="logComment">Comment</label>
+              <input id="logComment" type="text" placeholder="Antenna, conditions, comments…" />
+            </div>
+            <div class="actions">
+              <button type="button" class="filter-btn" onclick="setLogTimeNow()">⏱ Use now (UTC)</button>
+              <button type="button" class="ask-btn" style="margin-top:0;height:32px" onclick="addLogEntry()">＋ Add to log</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h3>Entries</h3>
+          <div class="log-stats" id="logStats"></div>
+          <div class="iox-row" style="margin-bottom:10px">
+            <button type="button" onclick="exportAdif()">⬇ Export ADIF</button>
+            <button type="button" onclick="exportLogCsv()">⬇ Export CSV</button>
+            <button type="button" onclick="clearLog()">🗑 Clear all…</button>
+          </div>
+          <div id="logTableWrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="swxBackdrop"
+      class="tour-backdrop"
+      hidden
+      style="display:none"
+    ></div>
+    <div id="tourBackdrop" class="tour-backdrop" hidden onclick="endTour()"></div>
+    <div id="tourSpot" class="tour-spot" hidden></div>
+    <div id="tourPop" class="tour-pop" hidden role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <div class="tt" id="tourTitle"></div>
+      <div class="td" id="tourBody"></div>
+      <div class="nav">
+        <span class="step" id="tourStep"></span>
+        <div class="btns">
+          <button type="button" onclick="endTour()">Skip</button>
+          <button type="button" id="tourPrev" onclick="tourPrev()">Back</button>
+          <button type="button" class="primary" id="tourNext" onclick="tourNext()">Next</button>
+        </div>
+      </div>
+    </div>    <div
       id="helpModal"
       class="modal-backdrop"
       hidden
@@ -2095,7 +2934,10 @@
             <kbd>f</kbd><span class="desc">Toggle favorite on the open band</span>
             <kbd>c</kbd><span class="desc">Open the RF calculator</span>
             <kbd>r</kbd><span class="desc">Random band</span>
+            <kbd>t</kbd><span class="desc">Open the tone generator</span>
+            <kbd>l</kbd><span class="desc">Open the logbook (active band pre-filled)</span>
             <kbd>p</kbd><span class="desc">Print (current view, with all bands expanded)</span>
+            <kbd>Ctrl</kbd>+<kbd>K</kbd><span class="desc">Open command palette (jump to band, run any action)</span>
             <kbd>?</kbd><span class="desc">Show this help</span>
           </div>
         </div>
@@ -2111,6 +2953,7 @@
               <input type="file" accept="application/json,.json" onchange="importSettings(this.files[0]); this.value=''" />
             </label>
             <button type="button" onclick="window.print()">🖨 Print this view</button>
+            <button type="button" onclick="closeHelpModal();setTimeout(startTour,150)">🌍 Start tour</button>
           </div>
         </div>
         <div class="modal-section">
@@ -3947,13 +4790,15 @@
             const safeName = b.name.replace(/'/g, "\\'")
             const fav = isFavorite(b.id)
             const hasN = hasNote(b.id)
-            return `<div class="band-row${isActive ? ' active' : ''}${fav ? ' is-favorite' : ''}${hasN ? ' has-notes' : ''}" id="row-${b.id}" role="button" tabindex="0" aria-expanded="${isActive}" onclick="toggleBand('${b.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBand('${b.id}')}">
+            const wkd = (typeof isWorked === 'function') && isWorked(b.id)
+            return `<div class="band-row${isActive ? ' active' : ''}${fav ? ' is-favorite' : ''}${hasN ? ' has-notes' : ''}${wkd ? ' has-worked' : ''}" id="row-${b.id}" role="button" tabindex="0" aria-expanded="${isActive}" onclick="toggleBand('${b.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBand('${b.id}')}">
       <div class="band-header" data-no-acro>
         <span class="cat-dot" style="background:${col}"></span>
         <span class="fav-star" aria-hidden="true">★</span>
         <span class="band-name">${b.name}</span>
         <span class="band-freq">${b.freq}</span>
         <span class="sdr-badge" style="background:${rtlColor}22;color:${rtlColor};border:1px solid ${rtlColor}55">${rtlText}</span>
+        ${_renderPropBadge(b)}
         <span style="color:var(--color-text-tertiary);font-size:11px" aria-hidden="true">${isActive ? '▲' : '▼'}</span>
       </div>
       <div class="band-detail" data-acro>
@@ -4001,6 +4846,7 @@
           <div class="info-label" style="margin-bottom:4px">Tuning tip</div>
           <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.6">${b.tip}</div>
         </div>
+        ${_renderRegionEdges(b)}
         <div class="band-notes" data-no-acro onclick="event.stopPropagation()">
           <div class="label"><span>📝 My notes</span><span class="saved" id="note-saved-${b.id}">✓ saved</span></div>
           <textarea
@@ -4019,6 +4865,8 @@
           <a href="${websdrUrlFor(b)}" target="_blank" rel="noopener noreferrer" title="Open a public WebSDR / KiwiSDR near this frequency" onclick="event.stopPropagation()">📡 WebSDR ↗</a>
           <a href="https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(b.name)}" target="_blank" rel="noopener noreferrer" title="Search Wikipedia" onclick="event.stopPropagation()">📖 Wikipedia ↗</a>
           <a href="https://www.sigidwiki.com/wiki/Special:Search?search=${encodeURIComponent(b.name)}" target="_blank" rel="noopener noreferrer" title="Search SignalIDWiki" onclick="event.stopPropagation()">🔎 SignalID ↗</a>
+          <button type="button" title="Log a QSO / SWL catch on this band" onclick="event.stopPropagation();openLogModal('${b.id}')">📒 Log…</button>
+          <button type="button" title="${(typeof isWorked === 'function' && isWorked(b.id)) ? 'Unmark as worked' : 'Mark band as worked'}" onclick="event.stopPropagation();markWorked('${b.id}', !isWorked('${b.id}'));">${(typeof isWorked === 'function' && isWorked(b.id)) ? '✅ Worked' : '☐ Mark worked'}</button>
           <button type="button" class="tool-fav${fav ? ' on' : ''}" title="${fav ? 'Unpin from favorites' : 'Pin to favorites'}" aria-pressed="${fav}" onclick="event.stopPropagation();toggleFavorite('${b.id}')">${fav ? '★ Pinned' : '☆ Pin'}</button>
         </div>
       </div>
@@ -4319,6 +5167,10 @@
           if (typeof closeCalcModal === 'function') closeCalcModal()
           if (typeof closeHelpModal === 'function') closeHelpModal()
           if (typeof closeRefModal === 'function') closeRefModal()
+          if (typeof closeToneModal === 'function') closeToneModal()
+          if (typeof closePalette === 'function') closePalette()
+          if (typeof closeLogModal === 'function') closeLogModal()
+          if (typeof endTour === 'function') endTour()
         }
       })
       window.openBandModal = openBandModal
@@ -4412,6 +5264,7 @@
         if (!b) return
         const txt = fmtTuneString(b)
         const done = () => {
+          if (typeof showToast === 'function') showToast('Tune string copied', txt, 'success', 2200)
           if (!btn) return
           const orig = btn.innerHTML
           btn.innerHTML = '✓ Copied'
@@ -4471,9 +5324,12 @@
         if (_calcModalLastFocus && _calcModalLastFocus.focus) _calcModalLastFocus.focus()
       }
       function _anyModalOpen() {
-        return Array.from(document.querySelectorAll('.modal-backdrop')).some(
+        const back = Array.from(document.querySelectorAll('.modal-backdrop')).some(
           (el) => !el.hidden,
         )
+        if (back) return true
+        const pal = document.getElementById('paletteBackdrop')
+        return !!(pal && !pal.hidden)
       }
       window.openCalcModal = openCalcModal
       window.closeCalcModal = closeCalcModal
@@ -4735,6 +5591,9 @@
           '<tr><td><strong>' + code + '</strong></td><td>' + escHtml(m) + '</td></tr>',
         ).join('')
         return (
+          '<h4>☀️ Solar &amp; space weather (live, NOAA SWPC)</h4>' +
+          '<div id="swxStatus" class="swx-status">Loading…</div>' +
+          '<div class="swx-grid" id="swxGrid"></div>' +
           '<h4>CTCSS sub-audible tones (Hz, EIA-RS-220)</h4>' +
           '<div class="tone-grid">' + tones + '</div>' +
           '<h4>DCS / DPL codes (octal)</h4>' +
@@ -4758,6 +5617,7 @@
         document.documentElement.style.overflow = 'hidden'
         const close = m.querySelector('.modal-close')
         if (close) close.focus()
+        if (typeof loadSpaceWx === 'function') loadSpaceWx()
       }
       function closeRefModal() {
         const m = document.getElementById('refModal')
@@ -4865,6 +5725,9 @@
           notes: bandNotes,
           grid: _userGrid || '',
           theme: (function () { try { return localStorage.getItem('rfguide-theme') || '' } catch (e) { return '' } })(),
+          worked: (typeof workedBands !== 'undefined') ? workedBands : {},
+          log: (typeof qsoLog !== 'undefined') ? qsoLog : [],
+          region: (typeof _ituRegion !== 'undefined') ? _ituRegion : 2,
         }
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
         const url = URL.createObjectURL(blob)
@@ -4898,16 +5761,858 @@
               try { localStorage.setItem('rfguide-grid', _userGrid) } catch (er) {}
               _updateClock()
             }
+            if (data.worked && typeof data.worked === 'object' && typeof workedBands !== 'undefined') {
+              workedBands = {}
+              Object.keys(data.worked).forEach(k => { workedBands[k] = data.worked[k] || { ts: Date.now() } })
+              _persistWorked(); _updateWorkedBar()
+            }
+            if (Array.isArray(data.log) && typeof qsoLog !== 'undefined') {
+              qsoLog = data.log.filter(x => x && typeof x === 'object')
+              _persistLog()
+            }
+            if ((data.region === 1 || data.region === 2 || data.region === 3) && typeof setRegion === 'function') {
+              setRegion(data.region)
+            }
             renderList()
-            alert('Imported: ' + favorites.length + ' favorites, ' + Object.keys(bandNotes).length + ' notes.')
+            showToast('Settings imported', favorites.length + ' favorites · ' + Object.keys(bandNotes).length + ' notes', 'success')
           } catch (err) {
-            alert('Import failed: ' + err.message)
+            showToast('Import failed', err.message, 'error')
           }
         }
         reader.readAsText(file)
       }
       window.exportSettings = exportSettings
       window.importSettings = importSettings
+
+      /* ============================================================
+         Phase 4 — toasts, command palette, ITU regions,
+         tone generator, HF propagation hints
+         ============================================================ */
+
+      /* ---------- 4.1 Toast system ---------- */
+      function showToast(title, desc, kind, ms) {
+        const stack = document.getElementById('toastStack')
+        if (!stack) return
+        const t = document.createElement('div')
+        t.className = 'toast' + (kind ? ' ' + kind : '')
+        const icon = kind === 'success' ? '✓'
+          : kind === 'warn' ? '⚠'
+          : kind === 'error' ? '✕'
+          : 'ℹ'
+        t.innerHTML =
+          '<span class="icon">' + icon + '</span>' +
+          '<div class="body"><div class="title"></div>' +
+          (desc ? '<div class="desc"></div>' : '') +
+          '</div>' +
+          '<button class="x" type="button" aria-label="Dismiss">×</button>'
+        t.querySelector('.title').textContent = title
+        if (desc) t.querySelector('.desc').textContent = desc
+        const close = () => {
+          t.classList.add('leaving')
+          setTimeout(() => t.remove(), 200)
+        }
+        t.querySelector('.x').onclick = close
+        stack.appendChild(t)
+        setTimeout(close, ms || 4000)
+      }
+      window.showToast = showToast
+
+      /* ---------- 4.2 ITU region selector ---------- */
+      let _ituRegion = (function () {
+        try { return parseInt(localStorage.getItem('rfguide-region'), 10) || 2 }
+        catch (e) { return 2 }
+      })()
+      const REGION_LABEL = { 1: 'Europe / Africa / Mid-East', 2: 'Americas', 3: 'Asia / Pacific' }
+      // HF ham-band edges per ITU region (MHz lo, MHz hi). Region 2 is default.
+      const HAM_EDGES = {
+        '160m': { 1: [1.810, 2.000], 2: [1.800, 2.000], 3: [1.800, 2.000] },
+        '80m':  { 1: [3.500, 3.800], 2: [3.500, 4.000], 3: [3.500, 3.900] },
+        '60m':  { 1: [5.3515, 5.3665], 2: [5.3305, 5.4065], 3: [5.3515, 5.3665] },
+        '40m':  { 1: [7.000, 7.200], 2: [7.000, 7.300], 3: [7.000, 7.200] },
+        '30m':  { 1: [10.100, 10.150], 2: [10.100, 10.150], 3: [10.100, 10.150] },
+        '20m':  { 1: [14.000, 14.350], 2: [14.000, 14.350], 3: [14.000, 14.350] },
+        '17m':  { 1: [18.068, 18.168], 2: [18.068, 18.168], 3: [18.068, 18.168] },
+        '15m':  { 1: [21.000, 21.450], 2: [21.000, 21.450], 3: [21.000, 21.450] },
+        '12m':  { 1: [24.890, 24.990], 2: [24.890, 24.990], 3: [24.890, 24.990] },
+        '10m':  { 1: [28.000, 29.700], 2: [28.000, 29.700], 3: [28.000, 29.700] },
+        '6m':   { 1: [50.000, 52.000], 2: [50.000, 54.000], 3: [50.000, 54.000] },
+      }
+      // Match a band entry to a HAM_EDGES key by scanning its name/id.
+      function _hamKeyFor(b) {
+        const s = ((b.id || '') + ' ' + (b.name || '')).toLowerCase()
+        const keys = ['160m','80m','60m','40m','30m','20m','17m','15m','12m','10m','6m']
+        for (const k of keys) if (s.includes(k)) return k
+        return null
+      }
+      function regionEdges(b) {
+        const k = _hamKeyFor(b)
+        if (!k) return null
+        const e = HAM_EDGES[k] && HAM_EDGES[k][_ituRegion]
+        if (!e) return null
+        return { lo: e[0], hi: e[1], key: k }
+      }
+      function _renderRegionEdges(b) {
+        const e = regionEdges(b)
+        if (!e) return ''
+        const lo = e.lo.toFixed(3).replace(/0+$/, '').replace(/\.$/, '.0')
+        const hi = e.hi.toFixed(3).replace(/0+$/, '').replace(/\.$/, '.0')
+        return '<div class="info-card" style="margin-top:8px">' +
+          '<div class="info-label">ITU Region ' + _ituRegion + ' edges (' + e.key + ')</div>' +
+          '<div class="info-val" style="font-family:var(--font-mono);font-variant-numeric:tabular-nums">' +
+          lo + ' – ' + hi + ' MHz</div></div>'
+      }
+      function _updateRegionPill() {
+        const el = document.getElementById('regionNum')
+        if (el) el.textContent = String(_ituRegion)
+        const btn = document.getElementById('regionBtn')
+        if (btn) btn.title = 'ITU Region ' + _ituRegion + ' — ' + REGION_LABEL[_ituRegion] + ' (click to cycle)'
+      }
+      function setRegion(n) {
+        _ituRegion = (n === 1 || n === 2 || n === 3) ? n : 2
+        try { localStorage.setItem('rfguide-region', String(_ituRegion)) } catch (e) {}
+        _updateRegionPill()
+        if (typeof renderList === 'function') renderList()
+        showToast('ITU Region ' + _ituRegion, REGION_LABEL[_ituRegion], 'success', 2200)
+      }
+      function cycleRegion() { setRegion(_ituRegion === 1 ? 2 : _ituRegion === 2 ? 3 : 1) }
+      window.setRegion = setRegion
+      window.cycleRegion = cycleRegion
+      _updateRegionPill()
+
+      /* ---------- 4.3 HF propagation hints ---------- */
+      // Crude heuristic per ham band: status by UTC hour bucket.
+      // 'good' / 'fair' / 'poor' + label.
+      const PROPAGATION = {
+        '160m': { day: 'poor', night: 'good', label: 'Top Band — night DX' },
+        '80m':  { day: 'poor', night: 'good', label: 'Regional NVIS night' },
+        '60m':  { day: 'fair', night: 'good', label: 'Channelised night band' },
+        '40m':  { day: 'fair', night: 'good', label: 'Workhorse — night DX, day regional' },
+        '30m':  { day: 'good', night: 'good', label: 'Low-noise digital, mostly open' },
+        '20m':  { day: 'good', night: 'fair', label: 'Day DX (always-on in good cycles)' },
+        '17m':  { day: 'good', night: 'poor', label: 'Day DX' },
+        '15m':  { day: 'good', night: 'poor', label: 'Day DX (cycle-dependent)' },
+        '12m':  { day: 'fair', night: 'poor', label: 'Solar-cycle dependent' },
+        '10m':  { day: 'fair', night: 'poor', label: 'High solar / sporadic-E only' },
+        '6m':   { day: 'fair', night: 'poor', label: '“Magic band” — sporadic-E summer' },
+      }
+      function _isDayLocal() {
+        const h = new Date().getHours()
+        return h >= 7 && h < 19
+      }
+      function propagationFor(b) {
+        const k = _hamKeyFor(b)
+        if (!k || !PROPAGATION[k]) return null
+        const p = PROPAGATION[k]
+        const status = _isDayLocal() ? p.day : p.night
+        const icon = status === 'good' ? '●' : status === 'fair' ? '◐' : '○'
+        return { status: status, label: p.label, key: k, icon: icon }
+      }
+      function _renderPropBadge(b) {
+        const p = propagationFor(b)
+        if (!p) return ''
+        return '<span class="prop-badge prop-' + p.status + '" title="' +
+          escHtml(p.label + ' · ' + (_isDayLocal() ? 'Daytime' : 'Nighttime') + ' propagation') +
+          '">' + p.icon + ' ' + p.status + '</span>'
+      }
+      window.propagationFor = propagationFor
+
+      /* ---------- 4.4 Tone generator (Web Audio) ---------- */
+      const CTCSS_PLAY_TONES = [67.0,69.3,71.9,74.4,77.0,79.7,82.5,85.4,88.5,91.5,94.8,97.4,100.0,103.5,107.2,110.9,114.8,118.8,123.0,127.3,131.8,136.5,141.3,146.2,151.4,156.7,162.2,167.9,173.8,179.9,186.2,192.8,203.5,210.7,218.1,225.7,233.6,241.8,250.3]
+      let _audioCtx = null
+      let _activeNodes = []
+      let _cwAbort = false
+      function _ensureAudio() {
+        if (!_audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext
+          if (!Ctx) { showToast('Web Audio not supported', '', 'error'); return null }
+          _audioCtx = new Ctx()
+        }
+        if (_audioCtx.state === 'suspended') _audioCtx.resume()
+        return _audioCtx
+      }
+      function stopAllTones() {
+        _cwAbort = true
+        _activeNodes.forEach(n => { try { n.stop() } catch (e) {} try { n.disconnect() } catch (e) {} })
+        _activeNodes = []
+        document.querySelectorAll('.tone-pad button.playing').forEach(b => b.classList.remove('playing'))
+        const now = document.getElementById('toneNow')
+        if (now) now.hidden = true
+      }
+      function _setNow(text) {
+        const now = document.getElementById('toneNow')
+        const t = document.getElementById('toneNowText')
+        if (now && t) { now.hidden = false; t.textContent = text }
+      }
+      function playTone(hz, durationSec, gain) {
+        const ctx = _ensureAudio(); if (!ctx) return
+        const t0 = ctx.currentTime
+        const o = ctx.createOscillator()
+        const g = ctx.createGain()
+        o.type = 'sine'
+        o.frequency.value = hz
+        g.gain.value = 0
+        g.gain.linearRampToValueAtTime(gain || 0.18, t0 + 0.01)
+        g.gain.setValueAtTime(gain || 0.18, t0 + Math.max(0, durationSec - 0.02))
+        g.gain.linearRampToValueAtTime(0, t0 + durationSec)
+        o.connect(g); g.connect(ctx.destination)
+        o.start(t0)
+        o.stop(t0 + durationSec + 0.05)
+        _activeNodes.push(o, g)
+      }
+      function playCtcss(hz, btn) {
+        stopAllTones()
+        if (btn) btn.classList.add('playing')
+        _setNow('CTCSS ' + hz.toFixed(1) + ' Hz')
+        playTone(hz, 2.0, 0.25)
+        setTimeout(() => { if (btn) btn.classList.remove('playing'); const n=document.getElementById('toneNow'); if (n) n.hidden = true }, 2100)
+      }
+      function playCarrierFromInput() {
+        const hz = parseFloat(document.getElementById('toneCarrierHz').value) || 700
+        stopAllTones()
+        _setNow('Carrier ' + hz.toFixed(0) + ' Hz (3 s)')
+        playTone(hz, 3.0, 0.18)
+        setTimeout(() => { const n=document.getElementById('toneNow'); if (n) n.hidden = true }, 3100)
+      }
+      const MORSE = {
+        'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..',
+        '0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.',
+        '.':'.-.-.-',',':'--..--','?':'..--..','/':'-..-.','=':'-...-','+':'.-.-.','-':'-....-','@':'.--.-.'
+      }
+      async function playCwFromInput() {
+        const text = (document.getElementById('toneCwText').value || '').toUpperCase()
+        const wpm = Math.max(5, Math.min(40, parseInt(document.getElementById('toneCwWpm').value, 10) || 18))
+        const hz = Math.max(200, Math.min(1500, parseInt(document.getElementById('toneCwHz').value, 10) || 700))
+        if (!text.trim()) return
+        stopAllTones()
+        _cwAbort = false
+        _ensureAudio()
+        // PARIS standard: dit = 1.2 / WPM seconds
+        const dit = 1.2 / wpm
+        _setNow('CW ' + wpm + ' WPM · ' + hz + ' Hz')
+        const sleep = (s) => new Promise(r => setTimeout(r, s * 1000))
+        for (const ch of text) {
+          if (_cwAbort) break
+          if (ch === ' ') { await sleep(dit * 4); continue } // 7-dit word gap (3 already from char gap)
+          const code = MORSE[ch]; if (!code) continue
+          for (let i = 0; i < code.length; i++) {
+            if (_cwAbort) break
+            const sym = code[i]
+            const len = sym === '.' ? dit : dit * 3
+            playTone(hz, len, 0.22)
+            await sleep(len + dit) // intra-character gap = 1 dit
+          }
+          await sleep(dit * 2) // inter-character gap = 3 dit total
+        }
+        if (!_cwAbort) { const n=document.getElementById('toneNow'); if (n) n.hidden = true }
+      }
+      function _populateToneCtcssPad() {
+        const pad = document.getElementById('toneCtcssPad')
+        if (!pad || pad.dataset.ready) return
+        pad.innerHTML = CTCSS_PLAY_TONES.map(hz =>
+          '<button type="button" data-hz="' + hz + '">' + hz.toFixed(1) + '</button>'
+        ).join('')
+        pad.querySelectorAll('button').forEach(b => {
+          b.onclick = () => playCtcss(parseFloat(b.dataset.hz), b)
+        })
+        pad.dataset.ready = '1'
+      }
+      let _toneModalLastFocus = null
+      function openToneModal() {
+        const m = document.getElementById('toneModal')
+        if (!m) return
+        _toneModalLastFocus = document.activeElement
+        _populateToneCtcssPad()
+        m.hidden = false
+        document.documentElement.style.overflow = 'hidden'
+        const close = m.querySelector('.modal-close'); if (close) close.focus()
+      }
+      function closeToneModal() {
+        const m = document.getElementById('toneModal')
+        if (!m || m.hidden) return
+        stopAllTones()
+        m.hidden = true
+        if (_anyModalOpen() === false) document.documentElement.style.overflow = ''
+        if (_toneModalLastFocus && _toneModalLastFocus.focus) _toneModalLastFocus.focus()
+      }
+      window.openToneModal = openToneModal
+      window.closeToneModal = closeToneModal
+      window.stopAllTones = stopAllTones
+      window.playCarrierFromInput = playCarrierFromInput
+      window.playCwFromInput = playCwFromInput
+
+      /* ---------- 4.5 Command palette ---------- */
+      let _paletteIdx = 0
+      let _paletteItems = []
+      let _paletteLastFocus = null
+      function _paletteCommands() {
+        const cmds = [
+          { group: 'Actions', icon: '🧮', label: 'Open RF calculator', meta: 'c', run: openCalcModal },
+          { group: 'Actions', icon: '📚', label: 'Open reference (CTCSS, Q-codes…)', run: openRefModal },
+          { group: 'Actions', icon: '�', label: 'Open logbook', meta: 'l', run: () => openLogModal() },
+          { group: 'Actions', icon: '🌍', label: 'Run onboarding tour', run: () => startTour() },
+          { group: 'Actions', icon: '�🔊', label: 'Open tone generator', meta: 't', run: openToneModal },
+          { group: 'Actions', icon: '🎲', label: 'Random band', meta: 'r', run: randomBand },
+          { group: 'Actions', icon: '?',  label: 'Show keyboard shortcuts', meta: '?', run: openHelpModal },
+          { group: 'Actions', icon: '🖨', label: 'Print current view', meta: 'p', run: () => window.print() },
+          { group: 'Actions', icon: '⬇', label: 'Export settings (.json)', run: exportSettings },
+          { group: 'Actions', icon: '🌓', label: 'Toggle theme (light / dark / auto)', run: () => { const t=document.getElementById('themeToggle'); if (t) t.click() } },
+        ]
+        cmds.push({ group: 'ITU Region', icon: '🌐', label: 'Set ITU Region 1 — Europe / Africa / Mid-East', run: () => setRegion(1) })
+        cmds.push({ group: 'ITU Region', icon: '🌐', label: 'Set ITU Region 2 — Americas', run: () => setRegion(2) })
+        cmds.push({ group: 'ITU Region', icon: '🌐', label: 'Set ITU Region 3 — Asia / Pacific', run: () => setRegion(3) })
+        // Filters
+        Object.keys(CAT_COLOR).forEach(cat => {
+          cmds.push({ group: 'Filter', icon: '⊙', label: 'Filter: ' + cat,
+            run: () => { const btn = document.querySelector('.filter-btn[data-cat="' + cat + '"]'); setFilter(cat, btn) } })
+        })
+        cmds.push({ group: 'Filter', icon: '⊙', label: 'Filter: All', run: () => { const btn = document.querySelector('.filter-btn[data-cat="all"]'); setFilter('all', btn) } })
+        // Bands
+        bands.forEach(b => {
+          cmds.push({ group: 'Bands', icon: '◆', label: b.name, meta: b.freq,
+            run: () => { closePalette(); setTimeout(() => clickBand(b.id), 30) } })
+        })
+        // Favorites quick toggle for active band
+        if (activeBand) {
+          cmds.push({ group: 'Actions', icon: '★', label: (isFavorite(activeBand) ? 'Unfavorite' : 'Favorite') + ' active band', meta: 'f',
+            run: () => { toggleFavorite(activeBand); renderList() } })
+        }
+        return cmds
+      }
+      function _scoreCmd(cmd, q) {
+        if (!q) return 1
+        const hay = (cmd.label + ' ' + (cmd.meta || '') + ' ' + cmd.group).toLowerCase()
+        if (hay.includes(q)) return 10 - Math.min(9, hay.indexOf(q))
+        // fuzzy: every char of q appears in order
+        let i = 0
+        for (const c of hay) { if (c === q[i]) i++; if (i === q.length) break }
+        return i === q.length ? 1 : 0
+      }
+      function _paletteRender() {
+        const list = document.getElementById('paletteList')
+        if (!list) return
+        if (!_paletteItems.length) {
+          list.innerHTML = '<div class="palette-empty">No matches.</div>'
+          return
+        }
+        let html = ''
+        let lastGroup = ''
+        _paletteItems.forEach((it, i) => {
+          if (it.group !== lastGroup) {
+            html += '<div class="palette-group">' + escHtml(it.group) + '</div>'
+            lastGroup = it.group
+          }
+          html += '<div class="palette-item' + (i === _paletteIdx ? ' on' : '') +
+            '" role="option" data-i="' + i + '">' +
+            '<span class="pi-icon">' + escHtml(it.icon || '') + '</span>' +
+            '<span class="pi-label"></span>' +
+            (it.meta ? '<span class="pi-meta">' + escHtml(it.meta) + '</span>' : '') +
+            '</div>'
+        })
+        list.innerHTML = html
+        const labels = list.querySelectorAll('.pi-label')
+        labels.forEach((el, i) => { el.textContent = _paletteItems[i].label })
+        list.querySelectorAll('.palette-item').forEach(el => {
+          el.onclick = () => { _paletteRun(parseInt(el.dataset.i, 10)) }
+          el.onmousemove = () => { _paletteIdx = parseInt(el.dataset.i, 10); _paletteHighlight() }
+        })
+      }
+      function _paletteHighlight() {
+        const list = document.getElementById('paletteList')
+        if (!list) return
+        list.querySelectorAll('.palette-item').forEach((el, i) => {
+          el.classList.toggle('on', i === _paletteIdx)
+        })
+        const cur = list.querySelector('.palette-item.on')
+        if (cur) cur.scrollIntoView({ block: 'nearest' })
+      }
+      function _paletteFilter() {
+        const q = (document.getElementById('paletteInput').value || '').trim().toLowerCase()
+        const all = _paletteCommands()
+        _paletteItems = all
+          .map(c => ({ c: c, s: _scoreCmd(c, q) }))
+          .filter(x => x.s > 0)
+          .sort((a, b) => b.s - a.s)
+          .map(x => x.c)
+        // Stable group order
+        const order = ['Actions', 'ITU Region', 'Filter', 'Bands']
+        _paletteItems.sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group))
+        _paletteIdx = 0
+        _paletteRender()
+      }
+      function _paletteRun(i) {
+        const it = _paletteItems[i]
+        if (!it) return
+        const run = it.run
+        closePalette()
+        setTimeout(run, 20)
+      }
+      function _paletteKey(e) {
+        if (e.key === 'ArrowDown') { e.preventDefault(); _paletteIdx = Math.min(_paletteItems.length - 1, _paletteIdx + 1); _paletteHighlight() }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); _paletteIdx = Math.max(0, _paletteIdx - 1); _paletteHighlight() }
+        else if (e.key === 'Enter') { e.preventDefault(); _paletteRun(_paletteIdx) }
+        else if (e.key === 'Escape') { e.preventDefault(); closePalette() }
+      }
+      function openPalette() {
+        const m = document.getElementById('paletteBackdrop')
+        if (!m) return
+        _paletteLastFocus = document.activeElement
+        const inp = document.getElementById('paletteInput')
+        if (inp) inp.value = ''
+        _paletteFilter()
+        m.hidden = false
+        document.documentElement.style.overflow = 'hidden'
+        setTimeout(() => { if (inp) inp.focus() }, 10)
+      }
+      function closePalette() {
+        const m = document.getElementById('paletteBackdrop')
+        if (!m || m.hidden) return
+        m.hidden = true
+        if (_anyModalOpen() === false) document.documentElement.style.overflow = ''
+        if (_paletteLastFocus && _paletteLastFocus.focus) _paletteLastFocus.focus()
+      }
+      window.openPalette = openPalette
+      window.closePalette = closePalette
+      window._paletteFilter = _paletteFilter
+      window._paletteKey = _paletteKey
+
+      /* ============================================================
+         Phase 5 — logbook, freq-jump, space wx, tour, worked-bands
+         ============================================================ */
+
+      /* ---------- 5.1 Frequency keypad / jump-to-freq ---------- */
+      function findBandByHz(hz) {
+        if (!hz || !isFinite(hz)) return null
+        // Prefer the band whose [flo, fhi] contains hz; tie-break by narrowest span.
+        const inside = bands.filter(b => b.flo && b.fhi && hz >= b.flo && hz <= b.fhi)
+        if (inside.length) {
+          inside.sort((a, b) => (a.fhi - a.flo) - (b.fhi - b.flo))
+          return inside[0]
+        }
+        // Else nearest by log-distance to band center.
+        let best = null, bestD = Infinity
+        for (const b of bands) {
+          const c = _bandCenterHz(b); if (!c) continue
+          const d = Math.abs(Math.log10(hz) - Math.log10(c))
+          if (d < bestD) { bestD = d; best = b }
+        }
+        return best
+      }
+      function _fmtHz(hz) {
+        if (hz >= 1e9) return (hz / 1e9).toFixed(3) + ' GHz'
+        if (hz >= 1e6) return (hz / 1e6).toFixed(3) + ' MHz'
+        if (hz >= 1e3) return (hz / 1e3).toFixed(3) + ' kHz'
+        return hz.toFixed(0) + ' Hz'
+      }
+      function jumpToFreq(input) {
+        const hz = _parseFreqQuery(input)
+        if (!hz) {
+          showToast('Could not parse frequency', 'Try “14.074 MHz”, “162.55”, “9750 kHz”, “868M”', 'error')
+          return
+        }
+        const b = findBandByHz(hz)
+        if (!b) { showToast('No band found near ' + _fmtHz(hz), '', 'warn'); return }
+        const inside = b.flo && b.fhi && hz >= b.flo && hz <= b.fhi
+        clickBand(b.id)
+        showToast(
+          inside ? 'Tuned to ' + _fmtHz(hz) : 'Nearest band: ' + b.name,
+          b.name + ' · ' + b.freq,
+          inside ? 'success' : 'info',
+          2800,
+        )
+        const inp = document.getElementById('freqJumpInput'); if (inp) inp.blur()
+      }
+      window.jumpToFreq = jumpToFreq
+      window.findBandByHz = findBandByHz
+
+      /* ---------- 5.2 Worked-bands progress ---------- */
+      let workedBands = (function () {
+        try { return JSON.parse(localStorage.getItem('rfguide-worked')) || {} }
+        catch (e) { return {} }
+      })()
+      function _persistWorked() {
+        try { localStorage.setItem('rfguide-worked', JSON.stringify(workedBands)) } catch (e) {}
+      }
+      function isWorked(id) { return !!workedBands[id] }
+      function markWorked(id, on) {
+        if (on) workedBands[id] = { ts: Date.now() }
+        else delete workedBands[id]
+        _persistWorked()
+        const row = document.getElementById('row-' + id)
+        if (row) row.classList.toggle('has-worked', isWorked(id))
+        _updateWorkedBar()
+      }
+      function _updateWorkedBar() {
+        const bar = document.getElementById('workedBar')
+        if (!bar) return
+        const total = bands.length
+        const done = bands.reduce((n, b) => n + (isWorked(b.id) ? 1 : 0), 0)
+        if (done === 0) { bar.hidden = true; return }
+        bar.hidden = false
+        const pct = total ? Math.round(100 * done / total) : 0
+        const nums = document.getElementById('workedNums'); if (nums) nums.textContent = done + ' / ' + total + ' bands'
+        const pctEl = document.getElementById('workedPct'); if (pctEl) pctEl.textContent = pct + '%'
+        const m = document.getElementById('workedMeter'); if (m) m.style.width = pct + '%'
+      }
+      window.isWorked = isWorked
+      window.markWorked = markWorked
+
+      /* ---------- 5.3 Logbook ---------- */
+      let qsoLog = (function () {
+        try { return JSON.parse(localStorage.getItem('rfguide-log')) || [] }
+        catch (e) { return [] }
+      })()
+      function _persistLog() {
+        try { localStorage.setItem('rfguide-log', JSON.stringify(qsoLog)) } catch (e) {}
+      }
+      function setLogTimeNow() {
+        const d = new Date()
+        const dEl = document.getElementById('logDate')
+        const tEl = document.getElementById('logTime')
+        if (dEl) dEl.value = d.toISOString().slice(0, 10)
+        if (tEl) tEl.value = d.toISOString().slice(11, 19)
+      }
+      function _populateLogBandSelect() {
+        const sel = document.getElementById('logBand')
+        if (!sel || sel.dataset.ready) return
+        sel.innerHTML = '<option value="">— pick a band —</option>' + bands
+          .map(b => '<option value="' + b.id + '">' + escHtml(b.name) + ' (' + escHtml(b.freq) + ')</option>')
+          .join('')
+        sel.dataset.ready = '1'
+      }
+      function addLogEntry() {
+        const v = (id) => (document.getElementById(id).value || '').trim()
+        const e = {
+          id: 'q' + Date.now() + Math.random().toString(36).slice(2, 6),
+          date: v('logDate'),
+          time: v('logTime'),
+          call: v('logCall'),
+          freq: v('logFreq'),
+          mode: v('logMode'),
+          rst: v('logRst'),
+          band: v('logBand'),
+          comment: v('logComment'),
+        }
+        if (!e.call && !e.freq) {
+          showToast('Need at least a call or frequency', '', 'warn'); return
+        }
+        if (!e.date || !e.time) setLogTimeNow()
+        e.date = e.date || document.getElementById('logDate').value
+        e.time = e.time || document.getElementById('logTime').value
+        qsoLog.unshift(e)
+        _persistLog()
+        if (e.band) markWorked(e.band, true)
+        _renderLog()
+        // Reset call/comment but keep date/time/band for rapid logging
+        document.getElementById('logCall').value = ''
+        document.getElementById('logComment').value = ''
+        document.getElementById('logCall').focus()
+        showToast('Logged: ' + (e.call || e.freq), '', 'success', 1800)
+      }
+      function deleteLogEntry(id) {
+        qsoLog = qsoLog.filter(e => e.id !== id)
+        _persistLog()
+        _renderLog()
+      }
+      function clearLog() {
+        if (!qsoLog.length) { showToast('Log is already empty', '', 'info'); return }
+        if (!confirm('Delete all ' + qsoLog.length + ' log entries? This cannot be undone.')) return
+        qsoLog = []
+        _persistLog()
+        _renderLog()
+        showToast('Log cleared', '', 'success')
+      }
+      function _renderLog() {
+        const wrap = document.getElementById('logTableWrap')
+        const cnt = document.getElementById('logCount')
+        const stats = document.getElementById('logStats')
+        if (cnt) cnt.textContent = qsoLog.length + (qsoLog.length === 1 ? ' entry' : ' entries')
+        if (!wrap) return
+        if (!qsoLog.length) {
+          wrap.innerHTML = '<div class="log-empty">No entries yet. Fill in the form above and click <strong>＋ Add to log</strong>.</div>'
+          if (stats) stats.innerHTML = ''
+          return
+        }
+        const calls = new Set(), modes = new Set(), bandsSet = new Set()
+        qsoLog.forEach(e => { if (e.call) calls.add(e.call.toUpperCase()); if (e.mode) modes.add(e.mode.toUpperCase()); if (e.band) bandsSet.add(e.band) })
+        if (stats) stats.innerHTML =
+          '<span><b>' + qsoLog.length + '</b> entries</span>' +
+          '<span><b>' + calls.size + '</b> unique calls</span>' +
+          '<span><b>' + modes.size + '</b> modes</span>' +
+          '<span><b>' + bandsSet.size + '</b> bands worked</span>'
+        const rows = qsoLog.map(e =>
+          '<tr>' +
+          '<td>' + escHtml(e.date || '') + ' ' + escHtml(e.time || '') + '</td>' +
+          '<td><strong>' + escHtml(e.call || '—') + '</strong></td>' +
+          '<td class="num">' + escHtml(e.freq || '') + '</td>' +
+          '<td>' + escHtml(e.mode || '') + '</td>' +
+          '<td>' + escHtml(e.rst || '') + '</td>' +
+          '<td>' + escHtml(e.band ? (bands.find(b => b.id === e.band) || {}).name || e.band : '') + '</td>' +
+          '<td>' + escHtml(e.comment || '') + '</td>' +
+          '<td><button class="del" type="button" title="Delete entry" onclick="deleteLogEntry(\'' + e.id + '\')">×</button></td>' +
+          '</tr>',
+        ).join('')
+        wrap.innerHTML =
+          '<div style="max-height:360px;overflow:auto;border:1px solid var(--color-border-tertiary);border-radius:var(--radius-md)">' +
+          '<table class="log-table"><thead><tr>' +
+          '<th>Date / Time UTC</th><th>Call</th><th>Freq</th><th>Mode</th><th>RST</th><th>Band</th><th>Comment</th><th></th>' +
+          '</tr></thead><tbody>' + rows + '</tbody></table></div>'
+      }
+      function _adifField(name, value) {
+        const v = String(value == null ? '' : value)
+        if (!v) return ''
+        return '<' + name + ':' + v.length + '>' + v + ' '
+      }
+      function exportAdif() {
+        if (!qsoLog.length) { showToast('Log is empty', '', 'warn'); return }
+        let out = 'ADIF export from RF Spectrum & SDR Guide\n'
+        out += '<ADIF_VER:5>3.1.4 <PROGRAMID:18>RF Spectrum SDR <EOH>\n\n'
+        qsoLog.forEach(e => {
+          const date = (e.date || '').replace(/-/g, '')
+          const time = (e.time || '').replace(/:/g, '').slice(0, 6)
+          const freqMHz = (() => {
+            const hz = _parseFreqQuery(e.freq)
+            return hz ? (hz / 1e6).toFixed(6) : ''
+          })()
+          out += _adifField('QSO_DATE', date)
+          out += _adifField('TIME_ON', time)
+          out += _adifField('CALL', (e.call || '').toUpperCase())
+          out += _adifField('FREQ', freqMHz)
+          out += _adifField('MODE', (e.mode || '').toUpperCase())
+          out += _adifField('RST_RCVD', e.rst || '')
+          out += _adifField('BAND', e.band || '')
+          out += _adifField('COMMENT', e.comment || '')
+          out += '<EOR>\n'
+        })
+        const blob = new Blob([out], { type: 'text/plain' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'rfguide-log-' + new Date().toISOString().slice(0, 10) + '.adi'
+        document.body.appendChild(a); a.click(); document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        showToast('ADIF exported', qsoLog.length + ' QSOs', 'success')
+      }
+      function _csvCell(s) {
+        const v = String(s == null ? '' : s)
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v
+      }
+      function exportLogCsv() {
+        if (!qsoLog.length) { showToast('Log is empty', '', 'warn'); return }
+        const head = 'Date,Time,Call,Freq,Mode,RST,Band,Comment'
+        const rows = qsoLog.map(e =>
+          [e.date, e.time, e.call, e.freq, e.mode, e.rst, e.band, e.comment].map(_csvCell).join(','),
+        ).join('\n')
+        const blob = new Blob([head + '\n' + rows], { type: 'text/csv' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'rfguide-log-' + new Date().toISOString().slice(0, 10) + '.csv'
+        document.body.appendChild(a); a.click(); document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        showToast('CSV exported', qsoLog.length + ' rows', 'success')
+      }
+      let _logModalLastFocus = null
+      function openLogModal(prefillBandId) {
+        const m = document.getElementById('logModal')
+        if (!m) return
+        _logModalLastFocus = document.activeElement
+        _populateLogBandSelect()
+        if (!document.getElementById('logDate').value) setLogTimeNow()
+        if (prefillBandId) {
+          const sel = document.getElementById('logBand'); if (sel) sel.value = prefillBandId
+          const b = bands.find(x => x.id === prefillBandId)
+          if (b) document.getElementById('logFreq').value = b.freq
+        }
+        _renderLog()
+        m.hidden = false
+        document.documentElement.style.overflow = 'hidden'
+        const close = m.querySelector('.modal-close'); if (close) close.focus()
+      }
+      function closeLogModal() {
+        const m = document.getElementById('logModal')
+        if (!m || m.hidden) return
+        m.hidden = true
+        if (_anyModalOpen() === false) document.documentElement.style.overflow = ''
+        if (_logModalLastFocus && _logModalLastFocus.focus) _logModalLastFocus.focus()
+      }
+      window.openLogModal = openLogModal
+      window.closeLogModal = closeLogModal
+      window.addLogEntry = addLogEntry
+      window.deleteLogEntry = deleteLogEntry
+      window.clearLog = clearLog
+      window.exportAdif = exportAdif
+      window.exportLogCsv = exportLogCsv
+      window.setLogTimeNow = setLogTimeNow
+
+      /* ---------- 5.4 Solar / space weather (NOAA SWPC) ---------- */
+      let _swxCache = null, _swxCacheTime = 0
+      const SWX_TTL = 10 * 60 * 1000 // 10 min
+      function _kIndexLabel(k) {
+        if (k == null) return '—'
+        const n = parseFloat(k); if (!isFinite(n)) return String(k)
+        if (n < 4) return n.toFixed(1) + ' (Quiet)'
+        if (n < 5) return n.toFixed(1) + ' (Unsettled)'
+        if (n < 6) return n.toFixed(1) + ' (Minor storm)'
+        if (n < 7) return n.toFixed(1) + ' (Moderate storm)'
+        return n.toFixed(1) + ' (Severe storm)'
+      }
+      function _sfiLabel(s) {
+        if (s == null) return '—'
+        const n = parseFloat(s); if (!isFinite(n)) return String(s)
+        if (n < 90) return n.toFixed(0) + ' (Low)'
+        if (n < 120) return n.toFixed(0) + ' (Moderate)'
+        if (n < 160) return n.toFixed(0) + ' (Good)'
+        return n.toFixed(0) + ' (Excellent)'
+      }
+      async function loadSpaceWx(force) {
+        const status = document.getElementById('swxStatus')
+        const grid = document.getElementById('swxGrid')
+        if (!status || !grid) return
+        const now = Date.now()
+        if (!force && _swxCache && now - _swxCacheTime < SWX_TTL) {
+          _renderSpaceWx(_swxCache); return
+        }
+        status.textContent = 'Fetching from NOAA SWPC…'
+        status.classList.remove('err')
+        try {
+          // Two small JSON files. Keep requests parallel and short.
+          const [kRes, sfiRes] = await Promise.all([
+            fetch('https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json'),
+            fetch('https://services.swpc.noaa.gov/json/f107_cm_flux.json'),
+          ])
+          if (!kRes.ok || !sfiRes.ok) throw new Error('HTTP ' + kRes.status + '/' + sfiRes.status)
+          const kArr = await kRes.json()
+          const sArr = await sfiRes.json()
+          // K-index: array of [time, kp, a_running, station_count]; first row is header.
+          const kRows = kArr.slice(1)
+          const last = kRows[kRows.length - 1] || []
+          // 24h max for an A-index proxy:
+          const last24 = kRows.slice(-8).map(r => parseFloat(r[1])).filter(isFinite)
+          const aProxy = last24.length ? Math.max.apply(null, last24) : null
+          // SFI: latest flux observation
+          const sLast = sArr[sArr.length - 1] || {}
+          const sfi = parseFloat(sLast.flux || sLast.f10_7 || sLast.observed_flux || NaN)
+          const data = {
+            kp: parseFloat(last[1]),
+            kpTime: last[0],
+            aProxy: aProxy,
+            sfi: isFinite(sfi) ? sfi : null,
+            updated: new Date().toISOString(),
+          }
+          _swxCache = data; _swxCacheTime = now
+          _renderSpaceWx(data)
+        } catch (err) {
+          status.textContent = 'NOAA fetch failed: ' + err.message + ' (offline / blocked?)'
+          status.classList.add('err')
+        }
+      }
+      function _renderSpaceWx(d) {
+        const status = document.getElementById('swxStatus')
+        const grid = document.getElementById('swxGrid')
+        if (!status || !grid) return
+        const u = new Date(d.updated || Date.now()).toUTCString()
+        status.textContent = 'Updated ' + u + ' · cached 10 min'
+        status.classList.remove('err')
+        const cards = [
+          { l: 'Solar Flux (10.7 cm)', v: d.sfi == null ? '—' : d.sfi.toFixed(0), h: _sfiLabel(d.sfi) },
+          { l: 'Planetary Kp (now)',  v: d.kp == null ? '—' : d.kp.toFixed(1), h: _kIndexLabel(d.kp) },
+          { l: 'Kp peak (last 24 h)', v: d.aProxy == null ? '—' : d.aProxy.toFixed(1), h: _kIndexLabel(d.aProxy) },
+        ]
+        grid.innerHTML = cards.map(c =>
+          '<div class="swx-card"><div class="l">' + escHtml(c.l) + '</div>' +
+          '<div class="v">' + escHtml(c.v) + '</div>' +
+          '<div class="h">' + escHtml(c.h) + '</div></div>',
+        ).join('')
+      }
+      window.loadSpaceWx = loadSpaceWx
+
+      /* ---------- 5.5 Onboarding tour ---------- */
+      const TOUR_STEPS = [
+        { sel: '#bandSearch',     title: 'Search anything',       body: 'Find bands by name, frequency, or use case. Try "FT8", "police", or "162.55".' },
+        { sel: '#freqJumpInput',  title: 'Tune by frequency',     body: 'Type any frequency (e.g. "14.074 MHz" or "868M") and press Enter to jump straight to that band.' },
+        { sel: '#paletteBtn',     title: 'Command palette',       body: 'Press Ctrl/⌘+K anywhere to fuzzy-jump to bands, run actions, switch filters or ITU regions.' },
+        { sel: '#calcBtn',        title: 'RF calculator',         body: 'Wavelength, coax loss, SWR, radio horizon, dBm/µV/S-units, Friis path loss + link margin.' },
+        { sel: '#toneBtn',        title: 'Tone generator',        body: 'Play CTCSS sub-audible tones, send CW practice text at any WPM, or generate carrier tones.' },
+        { sel: '#logBtn',         title: 'Logbook + ADIF',        body: 'Track QSOs / SWL catches per band. Export as ADIF for any logger or CSV for spreadsheets.' },
+        { sel: '#refBtn',         title: 'Reference + space wx',  body: 'CTCSS table, DCS, repeater offsets, Q-codes, phonetics — plus live solar conditions from NOAA.' },
+        { sel: '#helpBtn',        title: 'You\u2019re ready',     body: 'Press ? anytime for the full keyboard shortcut list. Have fun on the air!' },
+      ]
+      let _tourIdx = 0
+      function _tourPositionFor(target, popEl) {
+        const r = target.getBoundingClientRect()
+        const spot = document.getElementById('tourSpot')
+        const PAD = 6
+        spot.hidden = false
+        spot.style.left = Math.max(8, r.left - PAD) + 'px'
+        spot.style.top = Math.max(8, r.top - PAD) + 'px'
+        spot.style.width = (r.width + PAD * 2) + 'px'
+        spot.style.height = (r.height + PAD * 2) + 'px'
+        // Position pop below by default, above if no room
+        const popRect = popEl.getBoundingClientRect()
+        const vw = window.innerWidth, vh = window.innerHeight
+        let top = r.bottom + 12
+        if (top + popRect.height > vh - 12) top = Math.max(12, r.top - popRect.height - 12)
+        let left = Math.min(vw - popRect.width - 12, Math.max(12, r.left + r.width / 2 - popRect.width / 2))
+        popEl.style.top = top + 'px'
+        popEl.style.left = left + 'px'
+      }
+      function _tourShow() {
+        const pop = document.getElementById('tourPop')
+        const spot = document.getElementById('tourSpot')
+        const back = document.getElementById('tourBackdrop')
+        if (!pop || !spot || !back) return
+        const step = TOUR_STEPS[_tourIdx]
+        if (!step) { endTour(); return }
+        const target = document.querySelector(step.sel)
+        if (!target) { tourNext(); return }
+        target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+        back.hidden = false
+        pop.hidden = false
+        document.getElementById('tourTitle').textContent = step.title
+        document.getElementById('tourBody').textContent = step.body
+        document.getElementById('tourStep').textContent = (_tourIdx + 1) + ' / ' + TOUR_STEPS.length
+        document.getElementById('tourPrev').disabled = _tourIdx === 0
+        document.getElementById('tourNext').textContent = _tourIdx === TOUR_STEPS.length - 1 ? 'Done' : 'Next →'
+        // Reposition after layout settles
+        setTimeout(() => _tourPositionFor(target, pop), 80)
+      }
+      function tourNext() {
+        if (_tourIdx >= TOUR_STEPS.length - 1) { endTour(); return }
+        _tourIdx++; _tourShow()
+      }
+      function tourPrev() { if (_tourIdx > 0) { _tourIdx--; _tourShow() } }
+      function startTour() {
+        // Close any open modal so spotlights are visible
+        ;['closeBandModal','closeCalcModal','closeHelpModal','closeRefModal','closeToneModal','closeLogModal','closePalette']
+          .forEach(fn => { if (typeof window[fn] === 'function') window[fn]() })
+        _tourIdx = 0; _tourShow()
+        try { localStorage.setItem('rfguide-tour-seen', '1') } catch (e) {}
+      }
+      function endTour() {
+        ['tourBackdrop','tourSpot','tourPop'].forEach(id => { const el = document.getElementById(id); if (el) el.hidden = true })
+        try { localStorage.setItem('rfguide-tour-seen', '1') } catch (e) {}
+      }
+      window.startTour = startTour
+      window.endTour = endTour
+      window.tourNext = tourNext
+      window.tourPrev = tourPrev
+      window.addEventListener('resize', () => {
+        const pop = document.getElementById('tourPop')
+        if (!pop || pop.hidden) return
+        const step = TOUR_STEPS[_tourIdx]
+        const t = step && document.querySelector(step.sel)
+        if (t) _tourPositionFor(t, pop)
+      })
+
+      // First-visit auto-launch
+      setTimeout(() => {
+        try {
+          if (!localStorage.getItem('rfguide-tour-seen')) startTour()
+        } catch (e) {}
+      }, 600)
+
+      // Initial worked-bar paint
+      _updateWorkedBar()
 
       /* ---------- URL hash deep-linking ---------- */
       let _hashSyncing = false
@@ -4988,6 +6693,12 @@
         clickBand(nextId)
       }
       document.addEventListener('keydown', (e) => {
+        // Ctrl/Cmd+K opens the command palette from anywhere (even while typing).
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+          e.preventDefault()
+          openPalette()
+          return
+        }
         if (e.ctrlKey || e.metaKey || e.altKey) return
         const typing = _isTypingTarget(e.target)
         // '/' focuses the search box even when not typing.
@@ -5023,6 +6734,8 @@
         if (e.key === 'j' || e.key === 'J') { e.preventDefault(); _moveBand(1); return }
         if (e.key === 'k' || e.key === 'K') { e.preventDefault(); _moveBand(-1); return }
         if (e.key === 'r' || e.key === 'R') { e.preventDefault(); randomBand(); return }
+        if (e.key === 't' || e.key === 'T') { e.preventDefault(); openToneModal(); return }
+        if (e.key === 'l' || e.key === 'L') { e.preventDefault(); openLogModal(activeBand || undefined); return }
         if (e.key === 'p' || e.key === 'P') { e.preventDefault(); window.print(); return }
         if (e.key === 'f' || e.key === 'F') {
           if (activeBand) { e.preventDefault(); toggleFavorite(activeBand) }
