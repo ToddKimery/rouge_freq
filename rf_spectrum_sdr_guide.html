@@ -17,6 +17,11 @@
       content="#0f1115"
       media="(prefers-color-scheme: dark)"
     />
+    <!-- PWA: hide browser chrome when launched from home screen -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RF Guide" />
     <title>◉ ∿∿∿  ROUGE FREQ  ∿∿∿</title>
     <style>
       /* ---------- Design tokens (shadcn-flavoured, zinc palette) ---------- */
@@ -8613,7 +8618,8 @@
           short_name: 'RF Guide',
           description: 'Interactive RF spectrum & SDR reference, 76 Hz – 6 GHz',
           start_url: '.',
-          display: 'standalone',
+          display: 'fullscreen',
+          display_override: ['fullscreen', 'standalone', 'minimal-ui'],
           background_color: '#0a0a0a',
           theme_color: '#0a0a0a',
           share_target: {
@@ -8628,10 +8634,12 @@
           ],
         }
         try {
-          const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' })
+          const json = JSON.stringify(manifest)
+          // data: URL is more portable than blob: for single-file PWAs (works from file://, share targets, etc.)
+          const href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(json)
           const link = document.createElement('link')
           link.rel = 'manifest'
-          link.href = URL.createObjectURL(blob)
+          link.href = href
           document.head.appendChild(link)
         } catch (e) {}
 
